@@ -2,366 +2,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#2563eb">
-  <title>MInistry Tracker</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      background: #f4f7fb;
-      color: #172033;
-    }
-    header {
-      background: #2563eb;
-      color: white;
-      padding: 22px 18px;
-    }
-    header h1 { margin: 0 0 5px; font-size: 25px; }
-    header p { margin: 0; opacity: .9; font-size: 14px; }
-    main { max-width: 900px; margin: auto; padding: 18px; }
-    .card {
-      background: white;
-      border: 1px solid #e1e7f0;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 16px;
-    }
-    .card h2 { margin: 0 0 16px; font-size: 19px; }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-    }
-    .stat {
-      background: #eff6ff;
-      border-radius: 12px;
-      padding: 15px;
-    }
-    .stat span { display: block; color: #52627a; font-size: 13px; }
-    .stat strong { display: block; font-size: 28px; margin-top: 5px; color: #1d4ed8; }
-    label { display: block; font-weight: 600; font-size: 14px; margin: 13px 0 6px; }
-    input, textarea, button {
-      font: inherit;
-      font-size: 16px;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
-      background: white;
-      color: #172033;
-    }
-    textarea { min-height: 90px; resize: vertical; }
-    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    button {
-      border: 0;
-      border-radius: 9px;
-      padding: 12px 16px;
-      cursor: pointer;
-      font-weight: 600;
-      margin-top: 16px;
-    }
-    .primary { background: #2563eb; color: white; width: 100%; }
-    .secondary { background: #e8eef8; color: #1e40af; }
-    .danger { background: #fee2e2; color: #991b1b; }
-    .report {
-      border: 1px solid #e1e7f0;
-      border-radius: 10px;
-      padding: 14px;
-      margin-top: 10px;
-    }
-    .report strong { font-size: 16px; }
-    .report p { margin: 6px 0; color: #52627a; font-size: 14px; }
-    .report button { margin-top: 8px; padding: 8px 12px; font-size: 14px; }
-    .muted { color: #64748b; font-size: 13px; }
-    .status {
-      padding: 10px 12px;
-      background: #ecfdf5;
-      color: #166534;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-top: 12px;
-    }
-    @media (max-width: 450px) {
-      main { padding: 12px; }
-      .two { grid-template-columns: 1fr; gap: 0; }
-      .stats { gap: 8px; }
-      .stat strong { font-size: 24px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2563eb">
+<title>MInistry Tracker</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#2563eb;color:white;padding:22px 18px}
+header h1{margin:0 0 5px;font-size:25px}
+header p{margin:0;opacity:.9;font-size:14px}
+nav{display:flex;gap:6px;overflow-x:auto;background:white;padding:10px;border-bottom:1px solid #e1e7f0}
+nav button{margin:0;white-space:nowrap;background:#eef2f7;color:#475569}
+nav button.active{background:#2563eb;color:white}
+main{max-width:900px;margin:auto;padding:18px}
+.card{background:white;border:1px solid #e1e7f0;border-radius:14px;padding:18px;margin-bottom:16px}
+.card h2{margin:0 0 16px;font-size:19px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stat{background:#eff6ff;border-radius:12px;padding:15px}
+.stat span{display:block;color:#52627a;font-size:13px}
+.stat strong{display:block;font-size:27px;margin-top:5px;color:#1d4ed8}
+label{display:block;font-weight:600;font-size:14px;margin:13px 0 6px}
+input,textarea,select,button{font:inherit;font-size:16px}
+input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#172033}
+textarea{min-height:90px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:0;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:600;margin-top:16px}
+.primary{background:#2563eb;color:white;width:100%}
+.secondary{background:#e8eef8;color:#1e40af}
+.danger{background:#fee2e2;color:#991b1b}
+.muted{color:#64748b;font-size:13px}
+.status{padding:10px 12px;background:#ecfdf5;color:#166534;border-radius:8px;font-size:13px;margin-top:12px}
+.report{border:1px solid #e1e7f0;border-radius:10px;padding:14px;margin-top:10px}
+.report strong{font-size:16px}
+.report p{margin:6px 0;color:#52627a;font-size:14px}
+.report button{margin-top:8px;padding:8px 12px;font-size:14px}
+.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:600}
+.section{display:none}
+.section.active{display:block}
+.chart{display:flex;align-items:end;gap:8px;height:190px;border-bottom:1px solid #cbd5e1;padding:10px 0 0}
+.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;min-width:0}
+.bar{width:100%;max-width:42px;background:#3b82f6;border-radius:5px 5px 0 0;min-height:2px}
+.barlabel{font-size:10px;color:#64748b;margin-top:5px}
+.barvalue{font-size:10px;color:#334155;margin-bottom:3px}
+.profile{border:1px solid #e1e7f0;border-radius:10px;padding:14px;margin-top:10px}
+.profile h3{margin:0 0 5px;font-size:17px}
+.profile p{margin:5px 0;color:#52627a;font-size:14px}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.actions button{margin-top:8px;padding:8px 12px;font-size:14px}
+@media(max-width:450px){
+main{padding:12px}
+.two{grid-template-columns:1fr;gap:0}
+.stats{gap:8px}
+.stat strong{font-size:24px}
+.card{padding:14px}
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>📖 MInistry Tracker</h1>
-    <p>Your personal ministry journal</p>
-  </header>
 
-  <main>
-    <section class="card">
-      <h2>Monthly overview</h2>
-      <div class="stats">
-        <div class="stat">
-          <span>Total hours</span>
-          <strong id="totalHours">0:00</strong>
-        </div>
-        <div class="stat">
-          <span>Bible studies</span>
-          <strong id="totalStudies">0</strong>
-        </div>
-        <div class="stat">
-          <span>Return visits</span>
-          <strong id="totalVisits">0</strong>
-        </div>
-        <div class="stat">
-          <span>Reports</span>
-          <strong id="totalReports">0</strong>
-        </div>
-      </div>
-      <div class="status" id="storageStatus">
-        Your data is saved on this device.
-      </div>
-    </section>
+<header>
+<h1>📖 MInistry Tracker</h1>
+<p>Your personal ministry journal</p>
+</header>
 
-    <section class="card">
-      <h2>Add ministry report</h2>
-      <form id="reportForm">
-        <label for="month">Month</label>
-        <input type="month" id="month" required>
+<nav>
+<button class="active" data-tab="dashboard">Dashboard</button>
+<button data-tab="reports">Reports</button>
+<button data-tab="schedule">Schedule</button>
+<button data-tab="people">People</button>
+</nav>
 
-        <div class="two">
-          <div>
-            <label for="hours">Hours</label>
-            <input type="number" id="hours" min="0" max="999" value="0" required>
-          </div>
-          <div>
-            <label for="minutes">Minutes</label>
-            <input type="number" id="minutes" min="0" max="59" value="0" required>
-          </div>
-        </div>
+<main>
 
-        <div class="two">
-          <div>
-            <label for="studies">Bible studies</label>
-            <input type="number" id="studies" min="0" value="0" required>
-          </div>
-          <div>
-            <label for="visits">Return visits</label>
-            <input type="number" id="visits" min="0" value="0" required>
-          </div>
-        </div>
+<!-- DASHBOARD -->
+<section id="dashboard" class="section active">
+<div class="card">
+<h2>Monthly overview</h2>
+<label for="dashboardMonth">Select month</label>
+<input type="month" id="dashboardMonth">
+<div class="stats">
+<div class="stat"><span>Total hours</span><strong id="totalHours">0:00</strong></div>
+<div class="stat"><span>Bible studies</span><strong id="totalStudies">0</strong></div>
+<div class="stat"><span>Return visits</span><strong id="totalVisits">0</strong></div>
+<div class="stat"><span>Reports</span><strong id="totalReports">0</strong></div>
+</div>
+<div class="status">Your data is saved on this device.</div>
+</div>
 
-        <label for="notes">Notes</label>
-        <textarea id="notes" placeholder="Optional notes about your ministry..."></textarea>
+<div class="card">
+<h2>Ministry hours graph</h2>
+<p class="muted">Hours per month — current service year.</p>
+<div id="hoursChart" class="chart"></div>
+</div>
 
-        <button class="primary" type="submit">Save report</button>
-      </form>
-    </section>
+<div class="card">
+<h2>Upcoming schedule</h2>
+<div id="upcomingDashboard"></div>
+</div>
+</section>
 
-    <section class="card">
-      <h2>My reports</h2>
-      <p class="muted">Your saved reports appear here.</p>
-      <div id="reportsList"></div>
-      <button class="secondary" id="exportBtn" type="button">Export backup</button>
-      <button class="danger" id="clearBtn" type="button">Delete all reports</button>
-    </section>
-  </main>
+<!-- REPORTS -->
+<section id="reports" class="section">
+<div class="card">
+<h2>Add ministry report</h2>
+<form id="reportForm">
+<label for="month">Month</label>
+<input type="month" id="month" required>
+<div class="two">
+<div><label for="hours">Hours</label><input type="number" id="hours" min="0" max="999" value="0" required></div>
+<div><label for="minutes">Minutes</label><input type="number" id="minutes" min="0" max="59" value="0" required></div>
+</div>
+<div class="two">
+<div><label for="studies">Bible studies</label><input type="number" id="studies" min="0" value="0" required></div>
+<div><label for="visits">Return visits</label><input type="number" id="visits" min="0" value="0" required></div>
+</div>
+<label for="notes">Notes</label>
+<textarea id="notes" placeholder="Optional ministry notes..."></textarea>
+<button class="primary" type="submit">Save report</button>
+</form>
+</div>
+<div class="card">
+<h2>My reports</h2>
+<div id="reportsList"></div>
+</div>
+</section>
 
-  <script>
-    (function () {
-      "use strict";
+<!-- SCHEDULE -->
+<section id="schedule" class="section">
+<div class="card">
+<h2>Add schedule</h2>
+<form id="scheduleForm">
+<label for="eventTitle">Activity title</label>
+<input id="eventTitle" placeholder="Example: House-to-house ministry" required>
+<div class="two">
+<div><label for="eventDate">Date</label><input type="date" id="eventDate" required></div>
+<div><label for="eventTime">Time</label><input type="time" id="eventTime"></div>
+</div>
+<label for="eventLocation">Location</label>
+<input id="eventLocation" placeholder="Optional location">
+<label for="eventNotes">Notes</label>
+<textarea id="eventNotes" placeholder="Meeting point, preparation, etc."></textarea>
+<button class="primary" type="submit">Add to schedule</button>
+</form>
+</div>
+<div class="card">
+<h2>My schedule</h2>
+<div id="scheduleList"></div>
+</div>
+</section>
 
-      var STORAGE_KEY = "ministry_tracker_reports_v1";
-      var reports = [];
+<!-- PEOPLE -->
+<section id="people" class="section">
+<div class="card">
+<h2>Add person</h2>
+<p class="muted">Keep your Bible study and return visit information organized.</p>
+<form id="personForm">
+<label for="personName">Name / nickname</label>
+<input id="personName" placeholder="Enter a name or nickname" required>
+<label for="personType">Type</label>
+<select id="personType">
+<option value="Bible Study">Bible Study</option>
+<option value="Return Visit">Return Visit</option>
+</select>
+<label for="personContact">Contact information</label>
+<input id="personContact" placeholder="Optional phone or other contact">
+<label for="personLast">Last visit / study date</label>
+<input type="date" id="personLast">
+<label for="personNotes">Notes / interests / next topic</label>
+<textarea id="personNotes" placeholder="Optional notes"></textarea>
+<button class="primary" type="submit">Save person</button>
+</form>
+</div>
 
-      var form = document.getElementById("reportForm");
-      var monthInput = document.getElementById("month");
-      var hoursInput = document.getElementById("hours");
-      var minutesInput = document.getElementById("minutes");
-      var studiesInput = document.getElementById("studies");
-      var visitsInput = document.getElementById("visits");
-      var notesInput = document.getElementById("notes");
-      var reportsList = document.getElementById("reportsList");
+<div class="card">
+<h2>People list</h2>
+<label for="personFilter">Filter</label>
+<select id="personFilter">
+<option value="All">All</option>
+<option value="Bible Study">Bible Studies</option>
+<option value="Return Visit">Return Visits</option>
+</select>
+<div id="peopleList"></div>
+</div>
+</section>
 
-      function loadReports() {
-        try {
-          var saved = localStorage.getItem(STORAGE_KEY);
-          reports = saved ? JSON.parse(saved) : [];
-          if (!Array.isArray(reports)) reports = [];
-        } catch (error) {
-          reports = [];
-          document.getElementById("storageStatus").textContent =
-            "Storage is unavailable. Your reports may not be saved.";
-        }
-      }
+<div class="card">
+<h2>Backup and data</h2>
+<p class="muted">Export your reports, schedules, and profiles. Import a previous backup to restore data on this device.</p>
+<div class="actions">
+<button class="secondary" id="exportBtn" type="button">Export backup</button>
+<button class="secondary" id="importBtn" type="button">Import backup</button>
+<input type="file" id="importFile" accept=".json,application/json" style="display:none">
+<button class="danger" id="clearBtn" type="button">Delete all data</button>
+</div>
+</div>
 
-      function saveReports() {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
-          document.getElementById("storageStatus").textContent =
-            "Saved on this device. Not synced to other devices yet.";
-        } catch (error) {
-          alert("Could not save the report on this device.");
-        }
-      }
+</main>
 
-      function formatTime(totalMinutes) {
-        var h = Math.floor(totalMinutes / 60);
-        var m = totalMinutes % 60;
-        return h + ":" + String(m).padStart(2, "0");
-      }
+<script>
+(function(){
+"use strict";
 
-      function escapeHtml(value) {
-        return String(value)
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
+var KEY="ministry_tracker_v2";
+var data={reports:[],schedule:[],people:[]};
 
-      function updateDashboard() {
-        var totalMinutes = 0;
-        var studies = 0;
-        var visits = 0;
+function $(id){return document.getElementById(id);}
+function uid(){return Date.now()+"_"+Math.random().toString(36).slice(2);}
+function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){alert("Could not save data on this device.");}}
+function load(){try{var s=localStorage.getItem(KEY);if(s){var x=JSON.parse(s);if(x&&typeof x==="object"){data.reports=Array.isArray(x.reports)?x.reports:[];data.schedule=Array.isArray(x.schedule)?x.schedule:[];data.people=Array.isArray(x.people)?x.people:[];}}}catch(e){}}
+function fmt(min){return Math.floor(min/60)+":"+String(min%60).padStart(2,"0");}
+function dateText(s){if(!s)return "No date";return new Date(s+"T12:00:00").toLocaleDateString();}
+function monthText(s){if(!s)return "";var p=s.split("-");return new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});}
+function nowMonth(){return new Date().toISOString().slice(0,7);}
 
-        reports.forEach(function (report) {
-          totalMinutes += report.hours * 60 + report.minutes;
-          studies += report.studies;
-          visits += report.visits;
-        });
+function showTab(id){
+document.querySelectorAll(".section").forEach(function(s){s.classList.toggle("active",s.id===id);});
+document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("active",b.dataset.tab===id);});
+renderAll();
+}
+document.querySelectorAll("nav button").forEach(function(b){b.addEventListener("click",function(){showTab(b.dataset.tab);});});
 
-        document.getElementById("totalHours").textContent =
-          formatTime(totalMinutes);
-        document.getElementById("totalStudies").textContent = studies;
-        document.getElementById("totalVisits").textContent = visits;
-        document.getElementById("totalReports").textContent = reports.length;
-      }
+function renderDashboard(){
+var month=$("dashboardMonth").value||nowMonth();
+var rs=data.reports.filter(function(r){return r.month===month;});
+var mins=0,studies=0,visits=0;
+rs.forEach(function(r){mins+=r.hours*60+r.minutes;studies+=r.studies;visits+=r.visits;});
+$("totalHours").textContent=fmt(mins);
+$("totalStudies").textContent=studies;
+$("totalVisits").textContent=visits;
+$("totalReports").textContent=rs.length;
 
-      function renderReports() {
-        reportsList.innerHTML = "";
+var months=[];
+for(var i=5;i>=0;i--){
+var d=new Date(Number(month.slice(0,4)),Number(month.slice(5))-1-i,1);
+var key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+var total=0;
+data.reports.filter(function(r){return r.month===key;}).forEach(function(r){total+=r.hours*60+r.minutes;});
+months.push({key:key,total:total});
+}
+var max=1;
+months.forEach(function(m){if(m.total>max)max=m.total;});
+$("hoursChart").innerHTML=months.map(function(m){
+var h=Math.round(m.total/max*145);
+return '<div class="barwrap"><div class="barvalue">'+Math.floor(m.total/60)+'h</div><div class="bar" style="height:'+h+'px"></div><div class="barlabel">'+esc(m.key.slice(5))+'</div></div>';
+}).join("");
 
-        if (reports.length === 0) {
-          reportsList.innerHTML =
-            '<p class="muted">No reports yet. Add your first report above.</p>';
-          return;
-        }
+var upcoming=data.schedule.filter(function(e){return e.date>=new Date().toISOString().slice(0,10);}).sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);}).slice(0,5);
+$("upcomingDashboard").innerHTML=upcoming.length?upcoming.map(function(e){return '<div class="report"><strong>'+esc(e.title)+'</strong><p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p></div>';}).join(""):'<p class="muted">No upcoming activities.</p>';
+}
 
-        reports.slice().reverse().forEach(function (report) {
-          var item = document.createElement("div");
-          item.className = "report";
+$("dashboardMonth").value=nowMonth();
+$("dashboardMonth").addEventListener("change",renderDashboard);
 
-          var dateText = report.month || "Unknown month";
-          var notesText = report.notes
-            ? "<p>" + escapeHtml(report.notes) + "</p>"
-            : "";
+$("reportForm").addEventListener("submit",function(e){
+e.preventDefault();
+var h=Number($("hours").value),m=Number($("minutes").value);
+if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59){alert("Enter valid hours and minutes.");return;}
+data.reports.push({id:uid(),month:$("month").value,hours:h,minutes:m,studies:Number($("studies").value)||0,visits:Number($("visits").value)||0,notes:$("notes").value.trim()});
+save();this.reset();$("month").value=nowMonth();renderAll();alert("Report saved.");
+});
 
-          item.innerHTML =
-            "<strong>" + escapeHtml(dateText) + "</strong>" +
-            "<p>Hours: " + formatTime(report.hours * 60 + report.minutes) +
-            " · Bible studies: " + report.studies +
-            " · Return visits: " + report.visits + "</p>" +
-            notesText +
-            '<button class="danger" type="button">Delete</button>';
+function renderReports(){
+$("reportsList").innerHTML=data.reports.length?data.reports.slice().reverse().map(function(r){
+return '<div class="report"><strong>'+esc(monthText(r.month))+'</strong><p>Hours: '+fmt(r.hours*60+r.minutes)+' · Bible studies: '+r.studies+' · Return visits: '+r.visits+'</p>'+(r.notes?'<p>'+esc(r.notes)+'</p>':'')+'<div class="actions"><button class="danger" data-delete-report="'+esc(r.id)+'">Delete</button></div></div>';
+}).join(""):'<p class="muted">No reports yet.</p>';
+}
+$("reportsList").addEventListener("click",function(e){
+var b=e.target.closest("[data-delete-report]");
+if(b&&confirm("Delete this report?")){data.reports=data.reports.filter(function(r){return r.id!==b.dataset.deleteReport;});save();renderAll();}
+});
 
-          item.querySelector("button").addEventListener("click", function () {
-            if (confirm("Delete this report?")) {
-              reports = reports.filter(function (r) {
-                return r.id !== report.id;
-              });
-              saveReports();
-              updateDashboard();
-              renderReports();
-            }
-          });
+$("scheduleForm").addEventListener("submit",function(e){
+e.preventDefault();
+data.schedule.push({id:uid(),title:$("eventTitle").value.trim(),date:$("eventDate").value,time:$("eventTime").value,location:$("eventLocation").value.trim(),notes:$("eventNotes").value.trim()});
+save();this.reset();renderAll();alert("Schedule added.");
+});
+function renderSchedule(){
+var list=data.schedule.slice().sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);});
+$("scheduleList").innerHTML=list.length?list.map(function(e){
+return '<div class="report"><strong>'+esc(e.title)+'</strong><p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p>'+(e.location?'<p>📍 '+esc(e.location)+'</p>':'')+(e.notes?'<p>'+esc(e.notes)+'</p>':'')+'<button class="danger" data-delete-event="'+esc(e.id)+'">Delete</button></div>';
+}).join(""):'<p class="muted">No scheduled activities.</p>';
+}
+$("scheduleList").addEventListener("click",function(e){
+var b=e.target.closest("[data-delete-event]");
+if(b&&confirm("Delete this schedule?")){data.schedule=data.schedule.filter(function(x){return x.id!==b.dataset.deleteEvent;});save();renderAll();}
+});
 
-          reportsList.appendChild(item);
-        });
-      }
+$("personForm").addEventListener("submit",function(e){
+e.preventDefault();
+data.people.push({id:uid(),name:$("personName").value.trim(),type:$("personType").value,contact:$("personContact").value.trim(),last:$("personLast").value,notes:$("personNotes").value.trim()});
+save();this.reset();renderAll();alert("Person saved.");
+});
+$("personFilter").addEventListener("change",renderPeople);
+function renderPeople(){
+var filter=$("personFilter").value;
+var list=data.people.filter(function(p){return filter==="All"||p.type===filter;});
+$("peopleList").innerHTML=list.length?list.map(function(p){
+return '<div class="profile"><h3>'+esc(p.name)+'</h3><span class="pill">'+esc(p.type)+'</span>'+(p.contact?'<p>Contact: '+esc(p.contact)+'</p>':'')+(p.last?'<p>Last visit: '+dateText(p.last)+'</p>':'')+(p.notes?'<p>'+esc(p.notes)+'</p>':'')+'<button class="danger" data-delete-person="'+esc(p.id)+'">Delete</button></div>';
+}).join(""):'<p class="muted">No people added.</p>';
+}
+$("peopleList").addEventListener("click",function(e){
+var b=e.target.closest("[data-delete-person]");
+if(b&&confirm("Delete this person?")){data.people=data.people.filter(function(p){return p.id!==b.dataset.deletePerson;});save();renderAll();}
+});
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
+$("exportBtn").addEventListener("click",function(){
+var blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+var url=URL.createObjectURL(blob),a=document.createElement("a");
+a.href=url;a.download="ministry-tracker-backup.json";a.click();URL.revokeObjectURL(url);
+});
+$("importBtn").addEventListener("click",function(){$("importFile").click();});
+$("importFile").addEventListener("change",function(){
+var file=this.files[0];if(!file)return;
+var reader=new FileReader();
+reader.onload=function(){
+try{
+var x=JSON.parse(reader.result);
+if(!x||!Array.isArray(x.reports)||!Array.isArray(x.schedule)||!Array.isArray(x.people))throw new Error();
+if(confirm("Replace all current data with this backup?")){data=x;save();renderAll();alert("Backup imported.");}
+}catch(e){alert("Invalid backup file.");}
+};
+reader.readAsText(file);this.value="";
+});
+$("clearBtn").addEventListener("click",function(){
+if(confirm("Delete ALL reports, schedules, and profiles from this device?")){data={reports:[],schedule:[],people:[]};save();renderAll();}
+});
 
-        var hours = Number(hoursInput.value);
-        var minutes = Number(minutesInput.value);
-        var studies = Number(studiesInput.value);
-        var visits = Number(visitsInput.value);
-
-        if (
-          !monthInput.value ||
-          !Number.isFinite(hours) ||
-          !Number.isFinite(minutes) ||
-          !Number.isFinite(studies) ||
-          !Number.isFinite(visits) ||
-          hours < 0 ||
-          minutes < 0 ||
-          minutes > 59 ||
-          studies < 0 ||
-          visits < 0
-        ) {
-          alert("Please enter valid report values.");
-          return;
-        }
-
-        reports.push({
-          id: Date.now(),
-          month: monthInput.value,
-          hours: hours,
-          minutes: minutes,
-          studies: studies,
-          visits: visits,
-          notes: notesInput.value.trim()
-        });
-
-        saveReports();
-        updateDashboard();
-        renderReports();
-
-        form.reset();
-        monthInput.value = new Date().toISOString().slice(0, 7);
-        hoursInput.value = 0;
-        minutesInput.value = 0;
-        studiesInput.value = 0;
-        visitsInput.value = 0;
-
-        alert("Report saved successfully.");
-      });
-
-      document.getElementById("exportBtn").addEventListener("click", function () {
-        var data = JSON.stringify(reports, null, 2);
-        var blob = new Blob([data], { type: "application/json" });
-        var url = URL.createObjectURL(blob);
-        var link = document.createElement("a");
-
-        link.href = url;
-        link.download = "ministry-tracker-backup.json";
-        link.click();
-
-        URL.revokeObjectURL(url);
-      });
-
-      document.getElementById("clearBtn").addEventListener("click", function () {
-        if (!reports.length) {
-          alert("There are no reports to delete.");
-          return;
-        }
-
-        if (confirm("Delete ALL reports from this device? This cannot be undone.")) {
-          reports = [];
-          saveReports();
-          updateDashboard();
-          renderReports();
-        }
-      });
-
-      monthInput.value = new Date().toISOString().slice(0, 7);
-      loadReports();
-      updateDashboard();
-      renderReports();
-    })();
-  </script>
+function renderAll(){renderDashboard();renderReports();renderSchedule();renderPeople();}
+load();renderAll();
+})();
+</script>
 </body>
 </html>
