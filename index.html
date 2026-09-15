@@ -8,7 +8,9 @@
 <title>MInistry Tracker</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
@@ -165,6 +167,11 @@ color:#1e40af;
 .danger{
 background:#fee2e2;
 color:#991b1b;
+}
+
+.warning{
+background:#fef3c7;
+color:#92400e;
 }
 
 .muted{
@@ -353,7 +360,27 @@ padding:8px 12px;
 font-size:14px;
 }
 
+.formActions{
+display:flex;
+gap:8px;
+}
+
+.formActions button{
+flex:1;
+}
+
+.editingNotice{
+background:#fff7ed;
+border:1px solid #fed7aa;
+color:#9a3412;
+border-radius:8px;
+padding:10px;
+font-size:13px;
+margin-bottom:12px;
+}
+
 @media(max-width:450px){
+
 main{
 padding:12px;
 }
@@ -374,6 +401,12 @@ font-size:24px;
 .card{
 padding:14px;
 }
+
+.formActions{
+flex-direction:column;
+gap:0;
+}
+
 }
 </style>
 </head>
@@ -405,6 +438,7 @@ padding:14px;
 <input type="month" id="dashboardMonth">
 
 <div class="stats">
+
 <div class="stat">
 <span>Total hours</span>
 <strong id="totalHours">0:00</strong>
@@ -424,6 +458,7 @@ padding:14px;
 <span>Reports</span>
 <strong id="totalReports">0</strong>
 </div>
+
 </div>
 
 <div class="status">
@@ -501,18 +536,18 @@ Return visits
 <label>Bible studies</label>
 
 <p class="muted">
-Select every Bible study person you studied with on this date.
+Select every Bible Study person you studied with on this date.
 You may select as many people as needed.
 </p>
 
 <div id="studyPeopleChoices" class="peopleChoices">
 <p class="muted">
-No Bible study people yet. Add them in the Bible Studies tab first.
+No Bible Study people yet. Add them in the Bible Studies tab first.
 </p>
 </div>
 
 <div class="selectedNames" id="selectedStudyNames">
-No Bible study people selected.
+No Bible Study people selected.
 </div>
 
 <label for="studies">Total Bible studies</label>
@@ -602,13 +637,18 @@ Add to schedule
 <section id="bibleStudies" class="section">
 
 <div class="card">
-<h2>Add Bible Study</h2>
+
+<h2 id="bibleStudyFormTitle">Add Bible Study</h2>
 
 <p class="muted">
 Bible Studies added here will appear as selectable people in the Reports tab.
 </p>
 
+<div id="bibleStudyEditingNotice"></div>
+
 <form id="bibleStudyForm">
+
+<input type="hidden" id="bibleStudyEditId">
 
 <label for="bibleStudyName">Name / nickname</label>
 <input id="bibleStudyName" placeholder="Enter a name or nickname" required>
@@ -635,16 +675,28 @@ id="bibleStudyNotes"
 placeholder="Next topic, interests, progress, reminders..."
 ></textarea>
 
-<button class="primary" type="submit">
+<div class="formActions">
+
+<button class="primary" id="bibleStudySaveButton" type="submit">
 Save Bible Study
 </button>
+
+<button
+class="secondary"
+id="bibleStudyCancelButton"
+type="button"
+style="display:none"
+>
+Cancel edit
+</button>
+
+</div>
 
 </form>
 </div>
 
 <div class="card">
 <h2>Bible Studies List</h2>
-
 <div id="bibleStudiesList"></div>
 </div>
 
@@ -654,13 +706,18 @@ Save Bible Study
 <section id="interested" class="section">
 
 <div class="card">
-<h2>Add Interested Person</h2>
+
+<h2 id="interestedFormTitle">Add Interested Person</h2>
 
 <p class="muted">
 Use this page for people who show interest but are not yet Bible Studies.
 </p>
 
+<div id="interestedEditingNotice"></div>
+
 <form id="interestedForm">
+
+<input type="hidden" id="interestedEditId">
 
 <label for="interestedName">Name / nickname</label>
 <input id="interestedName" placeholder="Enter a name or nickname" required>
@@ -685,16 +742,28 @@ id="interestedNotes"
 placeholder="Next visit, possible topic, location, reminders..."
 ></textarea>
 
-<button class="primary" type="submit">
+<div class="formActions">
+
+<button class="primary" id="interestedSaveButton" type="submit">
 Save Interested Person
 </button>
+
+<button
+class="secondary"
+id="interestedCancelButton"
+type="button"
+style="display:none"
+>
+Cancel edit
+</button>
+
+</div>
 
 </form>
 </div>
 
 <div class="card">
 <h2>Interested People List</h2>
-
 <div id="interestedList"></div>
 </div>
 
@@ -702,6 +771,7 @@ Save Interested Person
 
 <!-- BACKUP -->
 <div class="card">
+
 <h2>Backup and data</h2>
 
 <p class="muted">
@@ -737,6 +807,7 @@ Delete all data
 
 <script>
 (function(){
+
 "use strict";
 
 var KEY="ministry_tracker_v2";
@@ -757,20 +828,28 @@ return Date.now()+"_"+Math.random().toString(36).slice(2);
 }
 
 function esc(value){
+
 return String(value==null?"":value)
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
 .replace(/"/g,"&quot;")
 .replace(/'/g,"&#039;");
+
 }
 
 function save(){
+
 try{
+
 localStorage.setItem(KEY,JSON.stringify(data));
+
 }catch(error){
+
 alert("Could not save data on this device.");
+
 }
+
 }
 
 function load(){
@@ -806,8 +885,10 @@ oldData.interested:[];
 }
 
 function fmt(minutes){
+
 return Math.floor(minutes/60)+":"+
 String(minutes%60).padStart(2,"0");
+
 }
 
 function dateText(date){
@@ -841,26 +922,36 @@ year:"numeric"
 }
 
 function nowDate(){
+
 return new Date().toISOString().slice(0,10);
+
 }
 
 function nowMonth(){
+
 return nowDate().slice(0,7);
+
 }
 
 function reportDate(report){
+
 return report.date||((report.month||"")+"-01");
+
 }
 
 function reportMonth(report){
+
 return report.date?
 report.date.slice(0,7):
 report.month;
+
 }
 
 function reportMinutes(report){
+
 return Number(report.hours||0)*60+
 Number(report.minutes||0);
+
 }
 
 function isBibleStudyPerson(person){
@@ -876,12 +967,22 @@ function showTab(id){
 
 document.querySelectorAll(".section")
 .forEach(function(section){
-section.classList.toggle("active",section.id===id);
+
+section.classList.toggle(
+"active",
+section.id===id
+);
+
 });
 
 document.querySelectorAll("nav button")
 .forEach(function(button){
-button.classList.toggle("active",button.dataset.tab===id);
+
+button.classList.toggle(
+"active",
+button.dataset.tab===id
+);
+
 });
 
 renderAll();
@@ -892,7 +993,9 @@ document.querySelectorAll("nav button")
 .forEach(function(button){
 
 button.addEventListener("click",function(){
+
 showTab(button.dataset.tab);
+
 });
 
 });
@@ -932,7 +1035,9 @@ function renderDashboard(){
 var month=$("dashboardMonth").value||nowMonth();
 
 var reports=data.reports.filter(function(report){
+
 return reportMonth(report)===month;
+
 });
 
 var totalMinutes=0;
@@ -953,6 +1058,7 @@ $("totalVisits").textContent=totalVisits;
 $("totalReports").textContent=reports.length;
 
 /* Monthly hours */
+
 var months=[];
 
 for(var i=5;i>=0;i--){
@@ -969,14 +1075,21 @@ String(date.getMonth()+1).padStart(2,"0");
 var total=0;
 
 data.reports.filter(function(report){
+
 return reportMonth(report)===key;
+
 }).forEach(function(report){
+
 total+=reportMinutes(report);
+
 });
 
 months.push({
+
 label:key.slice(5),
+
 total:Math.round(total/60*10)/10
+
 });
 
 }
@@ -984,18 +1097,23 @@ total:Math.round(total/60*10)/10
 $("hoursChart").innerHTML=makeBars(months,"");
 
 /* Studies and visits */
+
 $("activityChart").innerHTML=makeBars([
+
 {
 label:"Studies",
 total:totalStudies
 },
+
 {
 label:"Visits",
 total:totalVisits
 }
+
 ],"");
 
 /* Daily hours */
+
 var daysInMonth=new Date(
 Number(month.slice(0,4)),
 Number(month.slice(5)),
@@ -1012,14 +1130,21 @@ String(day).padStart(2,"0");
 var dailyTotal=0;
 
 data.reports.filter(function(report){
+
 return reportDate(report)===currentDate;
+
 }).forEach(function(report){
+
 dailyTotal+=reportMinutes(report);
+
 });
 
 daily.push({
+
 label:String(day),
+
 total:Math.round(dailyTotal/60*10)/10
+
 });
 
 }
@@ -1027,8 +1152,11 @@ total:Math.round(dailyTotal/60*10)/10
 $("dailyChart").innerHTML=makeBars(daily,"");
 
 /* People statistics */
+
 var bibleStudyPeople=data.people.filter(function(person){
+
 return isBibleStudyPerson(person);
+
 });
 
 var studiedPeople={};
@@ -1038,7 +1166,9 @@ reports.forEach(function(report){
 if(Array.isArray(report.studyPeople)){
 
 report.studyPeople.forEach(function(personId){
+
 studiedPeople[personId]=true;
+
 });
 
 }
@@ -1046,6 +1176,7 @@ studiedPeople[personId]=true;
 });
 
 $("peopleStats").innerHTML=
+
 '<div class="stats">'+
 
 '<div class="stat">'+
@@ -1071,12 +1202,18 @@ $("peopleStats").innerHTML=
 '</div>';
 
 /* Upcoming schedule */
+
 var upcoming=data.schedule
 .filter(function(event){
+
 return event.date>=nowDate();
+
 })
 .sort(function(a,b){
-return (a.date+a.time).localeCompare(b.date+b.time);
+
+return (a.date+a.time)
+.localeCompare(b.date+b.time);
+
 })
 .slice(0,5);
 
@@ -1104,20 +1241,22 @@ return '<div class="report">'+
 function renderStudyPeopleChoices(){
 
 var people=data.people.filter(function(person){
+
 return isBibleStudyPerson(person);
+
 });
 
 if(!people.length){
 
 $("studyPeopleChoices").innerHTML=
 '<p class="muted">'+
-'No Bible study people yet. Add them in the Bible Studies tab first.'+
+'No Bible Study people yet. Add them in the Bible Studies tab first.'+
 '</p>';
 
 $("studies").value=0;
 
 $("selectedStudyNames").textContent=
-"No Bible study people selected.";
+"No Bible Study people selected.";
 
 return;
 
@@ -1162,11 +1301,15 @@ document.querySelectorAll(
 selectedIds.push(checkbox.value);
 
 var person=data.people.find(function(item){
+
 return item.id===checkbox.value;
+
 });
 
 if(person){
+
 selectedNames.push(person.name);
+
 }
 
 });
@@ -1174,6 +1317,7 @@ selectedNames.push(person.name);
 $("studies").value=selectedIds.length;
 
 $("selectedStudyNames").innerHTML=
+
 selectedNames.length?
 
 '<span class="selectionTotal">'+
@@ -1183,7 +1327,7 @@ esc(selectedNames.join(", "))
 
 :
 
-"No Bible study people selected.";
+"No Bible Study people selected.";
 
 }
 
@@ -1214,7 +1358,9 @@ var selectedPeople=[];
 document.querySelectorAll(
 ".studyPersonCheckbox:checked"
 ).forEach(function(checkbox){
+
 selectedPeople.push(checkbox.value);
+
 });
 
 data.reports.push({
@@ -1248,7 +1394,7 @@ $("reportDate").value=nowDate();
 $("studies").value=0;
 
 $("selectedStudyNames").textContent=
-"No Bible study people selected.";
+"No Bible Study people selected.";
 
 renderStudyPeopleChoices();
 renderAll();
@@ -1262,7 +1408,9 @@ function renderReports(){
 var filter=$("reportsMonthFilter").value||nowMonth();
 
 var reports=data.reports.filter(function(report){
+
 return reportMonth(report)===filter;
+
 }).slice().reverse();
 
 $("reportsList").innerHTML=reports.length?
@@ -1276,7 +1424,9 @@ if(Array.isArray(report.studyPeople)){
 report.studyPeople.forEach(function(personId){
 
 var person=data.people.find(function(item){
+
 return item.id===personId;
+
 });
 
 names.push(person?person.name:"Deleted person");
@@ -1336,7 +1486,9 @@ confirm("Delete this report?")
 ){
 
 data.reports=data.reports.filter(function(report){
+
 return report.id!==button.dataset.deleteReport;
+
 });
 
 save();
@@ -1434,7 +1586,9 @@ confirm("Delete this schedule?")
 ){
 
 data.schedule=data.schedule.filter(function(item){
+
 return item.id!==button.dataset.deleteEvent;
+
 });
 
 save();
@@ -1444,15 +1598,34 @@ renderAll();
 
 });
 
-/* BIBLE STUDIES */
+/* BIBLE STUDIES EDITING */
+
+function resetBibleStudyForm(){
+
+$("bibleStudyForm").reset();
+
+$("bibleStudyEditId").value="";
+
+$("bibleStudyFormTitle").textContent=
+"Add Bible Study";
+
+$("bibleStudySaveButton").textContent=
+"Save Bible Study";
+
+$("bibleStudyCancelButton").style.display=
+"none";
+
+$("bibleStudyEditingNotice").innerHTML="";
+
+}
 
 $("bibleStudyForm").addEventListener("submit",function(event){
 
 event.preventDefault();
 
-data.people.push({
+var editId=$("bibleStudyEditId").value;
 
-id:uid(),
+var personData={
 
 name:$("bibleStudyName").value.trim(),
 
@@ -1466,23 +1639,117 @@ lastTopic:$("bibleStudyLastTopic").value.trim(),
 
 notes:$("bibleStudyNotes").value.trim()
 
+};
+
+if(editId){
+
+var person=data.people.find(function(person){
+
+return person.id===editId;
+
 });
+
+if(person){
+
+person.name=personData.name;
+person.type=personData.type;
+person.contact=personData.contact;
+person.last=personData.last;
+person.lastTopic=personData.lastTopic;
+person.notes=personData.notes;
+
+}
+
+alert("Bible Study details updated.");
+
+}else{
+
+data.people.push({
+
+id:uid(),
+
+name:personData.name,
+
+type:personData.type,
+
+contact:personData.contact,
+
+last:personData.last,
+
+lastTopic:personData.lastTopic,
+
+notes:personData.notes
+
+});
+
+alert("Bible Study saved.");
+
+}
 
 save();
 
-this.reset();
+resetBibleStudyForm();
 
 renderStudyPeopleChoices();
 renderAll();
 
-alert("Bible Study saved.");
+});
+
+$("bibleStudyCancelButton").addEventListener(
+"click",
+resetBibleStudyForm
+);
+
+function editBibleStudy(id){
+
+var person=data.people.find(function(person){
+
+return person.id===id;
 
 });
+
+if(!person){
+return;
+}
+
+$("bibleStudyEditId").value=person.id;
+
+$("bibleStudyName").value=person.name||"";
+
+$("bibleStudyContact").value=person.contact||"";
+
+$("bibleStudyLastDate").value=person.last||"";
+
+$("bibleStudyLastTopic").value=
+person.lastTopic||"";
+
+$("bibleStudyNotes").value=person.notes||"";
+
+$("bibleStudyFormTitle").textContent=
+"Edit Bible Study";
+
+$("bibleStudySaveButton").textContent=
+"Save Changes";
+
+$("bibleStudyCancelButton").style.display=
+"block";
+
+$("bibleStudyEditingNotice").innerHTML=
+'<div class="editingNotice">'+
+'You are editing '+esc(person.name)+
+'. Update the details and press Save Changes.'+
+'</div>';
+
+$("bibleStudyName").focus();
+
+}
 
 function renderBibleStudies(){
 
 var list=data.people.filter(function(person){
+
 return isBibleStudyPerson(person);
+
 });
 
 $("bibleStudiesList").innerHTML=list.length?
@@ -1513,9 +1780,17 @@ esc(person.lastTopic)+'</p>':
 esc(person.notes)+'</p>':
 '')+
 
+'<div class="actions">'+
+
+'<button class="warning" data-edit-bible-study="'+
+esc(person.id)+
+'">Edit</button>'+
+
 '<button class="danger" data-delete-bible-study="'+
 esc(person.id)+
 '">Delete</button>'+
+
+'</div>'+
 
 '</div>';
 
@@ -1529,17 +1804,31 @@ esc(person.id)+
 
 $("bibleStudiesList").addEventListener("click",function(event){
 
-var button=event.target.closest(
+var editButton=event.target.closest(
+"[data-edit-bible-study]"
+);
+
+var deleteButton=event.target.closest(
 "[data-delete-bible-study]"
 );
 
+if(editButton){
+
+editBibleStudy(editButton.dataset.editBibleStudy);
+
+return;
+
+}
+
 if(
-button&&
+deleteButton&&
 confirm("Delete this Bible Study?")
 ){
 
 data.people=data.people.filter(function(person){
-return person.id!==button.dataset.deleteBibleStudy;
+
+return person.id!==deleteButton.dataset.deleteBibleStudy;
+
 });
 
 save();
@@ -1551,15 +1840,34 @@ renderAll();
 
 });
 
-/* INTERESTED */
+/* INTERESTED EDITING */
+
+function resetInterestedForm(){
+
+$("interestedForm").reset();
+
+$("interestedEditId").value="";
+
+$("interestedFormTitle").textContent=
+"Add Interested Person";
+
+$("interestedSaveButton").textContent=
+"Save Interested Person";
+
+$("interestedCancelButton").style.display=
+"none";
+
+$("interestedEditingNotice").innerHTML="";
+
+}
 
 $("interestedForm").addEventListener("submit",function(event){
 
 event.preventDefault();
 
-data.interested.push({
+var editId=$("interestedEditId").value;
 
-id:uid(),
+var interestedData={
 
 name:$("interestedName").value.trim(),
 
@@ -1571,17 +1879,105 @@ topic:$("interestedTopic").value.trim(),
 
 notes:$("interestedNotes").value.trim()
 
+};
+
+if(editId){
+
+var person=data.interested.find(function(person){
+
+return person.id===editId;
+
 });
 
-save();
+if(person){
 
-this.reset();
+person.name=interestedData.name;
+person.contact=interestedData.contact;
+person.date=interestedData.date;
+person.topic=interestedData.topic;
+person.notes=interestedData.notes;
 
-renderAll();
+}
+
+alert("Interested person details updated.");
+
+}else{
+
+data.interested.push({
+
+id:uid(),
+
+name:interestedData.name,
+
+contact:interestedData.contact,
+
+date:interestedData.date,
+
+topic:interestedData.topic,
+
+notes:interestedData.notes
+
+});
 
 alert("Interested person saved.");
 
+}
+
+save();
+
+resetInterestedForm();
+
+renderAll();
+
 });
+
+$("interestedCancelButton").addEventListener(
+"click",
+resetInterestedForm
+);
+
+function editInterested(id){
+
+var person=data.interested.find(function(person){
+
+return person.id===id;
+
+});
+
+if(!person){
+return;
+}
+
+$("interestedEditId").value=person.id;
+
+$("interestedName").value=person.name||"";
+
+$("interestedContact").value=person.contact||"";
+
+$("interestedDate").value=person.date||"";
+
+$("interestedTopic").value=person.topic||"";
+
+$("interestedNotes").value=person.notes||"";
+
+$("interestedFormTitle").textContent=
+"Edit Interested Person";
+
+$("interestedSaveButton").textContent=
+"Save Changes";
+
+$("interestedCancelButton").style.display=
+"block";
+
+$("interestedEditingNotice").innerHTML=
+'<div class="editingNotice">'+
+'You are editing '+esc(person.name)+
+'. Update the details and press Save Changes.'+
+'</div>';
+
+$("interestedName").focus();
+
+}
 
 function renderInterested(){
 
@@ -1613,9 +2009,17 @@ esc(person.topic)+'</p>':
 esc(person.notes)+'</p>':
 '')+
 
+'<div class="actions">'+
+
+'<button class="warning" data-edit-interested="'+
+esc(person.id)+
+'">Edit</button>'+
+
 '<button class="danger" data-delete-interested="'+
 esc(person.id)+
 '">Delete</button>'+
+
+'</div>'+
 
 '</div>';
 
@@ -1629,17 +2033,31 @@ esc(person.id)+
 
 $("interestedList").addEventListener("click",function(event){
 
-var button=event.target.closest(
+var editButton=event.target.closest(
+"[data-edit-interested]"
+);
+
+var deleteButton=event.target.closest(
 "[data-delete-interested]"
 );
 
+if(editButton){
+
+editInterested(editButton.dataset.editInterested);
+
+return;
+
+}
+
 if(
-button&&
+deleteButton&&
 confirm("Delete this Interested person?")
 ){
 
 data.interested=data.interested.filter(function(person){
-return person.id!==button.dataset.deleteInterested;
+
+return person.id!==deleteButton.dataset.deleteInterested;
+
 });
 
 save();
@@ -1664,6 +2082,7 @@ var link=document.createElement("a");
 
 link.href=url;
 link.download="ministry-tracker-backup.json";
+
 link.click();
 
 URL.revokeObjectURL(url);
@@ -1671,7 +2090,9 @@ URL.revokeObjectURL(url);
 });
 
 $("importBtn").addEventListener("click",function(){
+
 $("importFile").click();
+
 });
 
 $("importFile").addEventListener("change",function(){
@@ -1702,7 +2123,9 @@ throw new Error();
 }
 
 if(!Array.isArray(imported.interested)){
+
 imported.interested=[];
+
 }
 
 if(
@@ -1751,6 +2174,9 @@ interested:[]
 
 save();
 
+resetBibleStudyForm();
+resetInterestedForm();
+
 renderStudyPeopleChoices();
 renderAll();
 
@@ -1773,7 +2199,9 @@ renderInterested();
 load();
 
 $("dashboardMonth").value=nowMonth();
+
 $("reportDate").value=nowDate();
+
 $("reportsMonthFilter").value=nowMonth();
 
 renderStudyPeopleChoices();
