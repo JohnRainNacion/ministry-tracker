@@ -6,196 +6,626 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#2563eb">
 <title>MInistry Tracker</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f7fb;color:#172033}
-header{background:#2563eb;color:white;padding:22px 18px}
-header h1{margin:0 0 5px;font-size:25px}
-header p{margin:0;opacity:.9;font-size:14px}
-nav{display:flex;gap:6px;overflow-x:auto;background:white;padding:10px;border-bottom:1px solid #e1e7f0}
-nav button{margin:0;white-space:nowrap;background:#eef2f7;color:#475569}
-nav button.active{background:#2563eb;color:white}
-main{max-width:900px;margin:auto;padding:18px}
-.card{background:white;border:1px solid #e1e7f0;border-radius:14px;padding:18px;margin-bottom:16px}
-.card h2{margin:0 0 16px;font-size:19px}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{background:#eff6ff;border-radius:12px;padding:15px}
-.stat span{display:block;color:#52627a;font-size:13px}
-.stat strong{display:block;font-size:27px;margin-top:5px;color:#1d4ed8}
-label{display:block;font-weight:600;font-size:14px;margin:13px 0 6px}
-input,textarea,select,button{font:inherit;font-size:16px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#172033}
-textarea{min-height:90px;resize:vertical}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:0;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:600;margin-top:16px}
-.primary{background:#2563eb;color:white;width:100%}
-.secondary{background:#e8eef8;color:#1e40af}
-.danger{background:#fee2e2;color:#991b1b}
-.muted{color:#64748b;font-size:13px}
-.status{padding:10px 12px;background:#ecfdf5;color:#166534;border-radius:8px;font-size:13px;margin-top:12px}
-.report{border:1px solid #e1e7f0;border-radius:10px;padding:14px;margin-top:10px}
-.report strong{font-size:16px}
-.report p{margin:6px 0;color:#52627a;font-size:14px}
-.report button{margin-top:8px;padding:8px 12px;font-size:14px}
-.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:600}
-.section{display:none}
-.section.active{display:block}
-.chart{display:flex;align-items:end;gap:8px;height:190px;border-bottom:1px solid #cbd5e1;padding:10px 0 0}
-.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;min-width:0}
-.bar{width:100%;max-width:42px;background:#3b82f6;border-radius:5px 5px 0 0;min-height:2px}
-.barlabel{font-size:10px;color:#64748b;margin-top:5px}
-.barvalue{font-size:10px;color:#334155;margin-bottom:3px}
-.profile{border:1px solid #e1e7f0;border-radius:10px;padding:14px;margin-top:10px}
-.profile h3{margin:0 0 5px;font-size:17px}
-.profile p{margin:5px 0;color:#52627a;font-size:14px}
-.actions{display:flex;gap:6px;flex-wrap:wrap}
-.actions button{margin-top:8px;padding:8px 12px;font-size:14px}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
+}
+
+header{
+  background:#2563eb;
+  color:white;
+  padding:22px 18px;
+}
+
+header h1{
+  margin:0 0 5px;
+  font-size:25px;
+}
+
+header p{
+  margin:0;
+  opacity:.9;
+  font-size:14px;
+}
+
+nav{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  background:white;
+  padding:10px;
+  border-bottom:1px solid #e1e7f0;
+}
+
+nav button{
+  margin:0;
+  white-space:nowrap;
+  background:#eef2f7;
+  color:#475569;
+}
+
+nav button.active{
+  background:#2563eb;
+  color:white;
+}
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:18px;
+}
+
+.card{
+  background:white;
+  border:1px solid #e1e7f0;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:16px;
+}
+
+.card h2{
+  margin:0 0 16px;
+  font-size:19px;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.stat{
+  background:#eff6ff;
+  border-radius:12px;
+  padding:15px;
+}
+
+.stat span{
+  display:block;
+  color:#52627a;
+  font-size:13px;
+}
+
+.stat strong{
+  display:block;
+  font-size:27px;
+  margin-top:5px;
+  color:#1d4ed8;
+}
+
+label{
+  display:block;
+  font-weight:600;
+  font-size:14px;
+  margin:13px 0 6px;
+}
+
+input,textarea,select,button{
+  font:inherit;
+  font-size:16px;
+}
+
+input,textarea,select{
+  width:100%;
+  padding:12px;
+  border:1px solid #cbd5e1;
+  border-radius:9px;
+  background:white;
+  color:#172033;
+}
+
+textarea{
+  min-height:90px;
+  resize:vertical;
+}
+
+.two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+button{
+  border:0;
+  border-radius:9px;
+  padding:12px 16px;
+  cursor:pointer;
+  font-weight:600;
+  margin-top:16px;
+}
+
+.primary{
+  background:#2563eb;
+  color:white;
+  width:100%;
+}
+
+.secondary{
+  background:#e8eef8;
+  color:#1e40af;
+}
+
+.danger{
+  background:#fee2e2;
+  color:#991b1b;
+}
+
+.muted{
+  color:#64748b;
+  font-size:13px;
+}
+
+.status{
+  padding:10px 12px;
+  background:#ecfdf5;
+  color:#166534;
+  border-radius:8px;
+  font-size:13px;
+  margin-top:12px;
+}
+
+.report{
+  border:1px solid #e1e7f0;
+  border-radius:10px;
+  padding:14px;
+  margin-top:10px;
+}
+
+.report strong{
+  font-size:16px;
+}
+
+.report p{
+  margin:6px 0;
+  color:#52627a;
+  font-size:14px;
+}
+
+.report button{
+  margin-top:8px;
+  padding:8px 12px;
+  font-size:14px;
+}
+
+.pill{
+  display:inline-block;
+  padding:4px 8px;
+  border-radius:20px;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-size:12px;
+  font-weight:600;
+}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.chart{
+  display:flex;
+  align-items:end;
+  gap:8px;
+  height:190px;
+  border-bottom:1px solid #cbd5e1;
+  padding:10px 0 0;
+}
+
+.barwrap{
+  flex:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:end;
+  align-items:center;
+  min-width:0;
+}
+
+.bar{
+  width:100%;
+  max-width:42px;
+  background:#3b82f6;
+  border-radius:5px 5px 0 0;
+  min-height:2px;
+}
+
+.barlabel{
+  font-size:10px;
+  color:#64748b;
+  margin-top:5px;
+}
+
+.barvalue{
+  font-size:10px;
+  color:#334155;
+  margin-bottom:3px;
+}
+
+.profile{
+  border:1px solid #e1e7f0;
+  border-radius:10px;
+  padding:14px;
+  margin-top:10px;
+}
+
+.profile h3{
+  margin:0 0 5px;
+  font-size:17px;
+}
+
+.profile p{
+  margin:5px 0;
+  color:#52627a;
+  font-size:14px;
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.actions button{
+  margin-top:8px;
+  padding:8px 12px;
+  font-size:14px;
+}
+
+.editing{
+  border:2px solid #2563eb;
+  background:#eff6ff;
+}
+
 @media(max-width:450px){
-main{padding:12px}
-.two{grid-template-columns:1fr;gap:0}
-.stats{gap:8px}
-.stat strong{font-size:24px}
-.card{padding:14px}
+  main{
+    padding:12px;
+  }
+
+  .two{
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .stats{
+    gap:8px;
+  }
+
+  .stat strong{
+    font-size:24px;
+  }
+
+  .card{
+    padding:14px;
+  }
 }
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>📖 MInistry Tracker</h1>
-<p>Your personal ministry journal</p>
+  <h1>📖 MInistry Tracker</h1>
+  <p>Your personal ministry journal</p>
 </header>
 
 <nav>
-<button class="active" data-tab="dashboard">Dashboard</button>
-<button data-tab="reports">Reports</button>
-<button data-tab="schedule">Schedule</button>
-<button data-tab="people">People</button>
+  <button class="active" data-tab="dashboard">Dashboard</button>
+  <button data-tab="reports">Reports</button>
+  <button data-tab="schedule">Schedule</button>
+  <button data-tab="people">People</button>
 </nav>
 
 <main>
 
 <!-- DASHBOARD -->
 <section id="dashboard" class="section active">
-<div class="card">
-<h2>Monthly overview</h2>
-<label for="dashboardMonth">Select month</label>
-<input type="month" id="dashboardMonth">
-<div class="stats">
-<div class="stat"><span>Total hours</span><strong id="totalHours">0:00</strong></div>
-<div class="stat"><span>Bible studies</span><strong id="totalStudies">0</strong></div>
-<div class="stat"><span>Return visits</span><strong id="totalVisits">0</strong></div>
-<div class="stat"><span>Reports</span><strong id="totalReports">0</strong></div>
-</div>
-<div class="status">Your data is saved on this device.</div>
-</div>
 
-<div class="card">
-<h2>Ministry hours graph</h2>
-<p class="muted">Hours per month — current service year.</p>
-<div id="hoursChart" class="chart"></div>
-</div>
+  <div class="card">
+    <h2>Monthly overview</h2>
 
-<div class="card">
-<h2>Upcoming schedule</h2>
-<div id="upcomingDashboard"></div>
-</div>
+    <label for="dashboardMonth">Select month</label>
+    <input type="month" id="dashboardMonth">
+
+    <div class="stats">
+      <div class="stat">
+        <span>Total hours</span>
+        <strong id="totalHours">0:00</strong>
+      </div>
+
+      <div class="stat">
+        <span>Bible studies</span>
+        <strong id="totalStudies">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Return visits</span>
+        <strong id="totalVisits">0</strong>
+      </div>
+
+      <div class="stat">
+        <span>Daily reports</span>
+        <strong id="totalReports">0</strong>
+      </div>
+    </div>
+
+    <div class="status">
+      Your data is saved on this device.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ministry hours graph</h2>
+    <p class="muted">
+      Daily ministry hours for the selected month.
+    </p>
+    <div id="hoursChart" class="chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>Upcoming schedule</h2>
+    <div id="upcomingDashboard"></div>
+  </div>
+
 </section>
 
 <!-- REPORTS -->
 <section id="reports" class="section">
-<div class="card">
-<h2>Add ministry report</h2>
-<form id="reportForm">
-<label for="month">Month</label>
-<input type="month" id="month" required>
-<div class="two">
-<div><label for="hours">Hours</label><input type="number" id="hours" min="0" max="999" value="0" required></div>
-<div><label for="minutes">Minutes</label><input type="number" id="minutes" min="0" max="59" value="0" required></div>
-</div>
-<div class="two">
-<div><label for="studies">Bible studies</label><input type="number" id="studies" min="0" value="0" required></div>
-<div><label for="visits">Return visits</label><input type="number" id="visits" min="0" value="0" required></div>
-</div>
-<label for="notes">Notes</label>
-<textarea id="notes" placeholder="Optional ministry notes..."></textarea>
-<button class="primary" type="submit">Save report</button>
-</form>
-</div>
-<div class="card">
-<h2>My reports</h2>
-<div id="reportsList"></div>
-</div>
+
+  <div class="card" id="reportFormCard">
+    <h2 id="reportFormTitle">Add daily ministry report</h2>
+
+    <p class="muted">
+      Add your ministry activity for one exact day.
+    </p>
+
+    <form id="reportForm">
+
+      <label for="reportDate">Date</label>
+      <input type="date" id="reportDate" required>
+
+      <div class="two">
+        <div>
+          <label for="hours">Hours</label>
+          <input
+            type="number"
+            id="hours"
+            min="0"
+            max="999"
+            value="0"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="minutes">Minutes</label>
+          <input
+            type="number"
+            id="minutes"
+            min="0"
+            max="59"
+            value="0"
+            required
+          >
+        </div>
+      </div>
+
+      <div class="two">
+        <div>
+          <label for="studies">Bible studies</label>
+          <input
+            type="number"
+            id="studies"
+            min="0"
+            value="0"
+            required
+          >
+        </div>
+
+        <div>
+          <label for="visits">Return visits</label>
+          <input
+            type="number"
+            id="visits"
+            min="0"
+            value="0"
+            required
+          >
+        </div>
+      </div>
+
+      <label for="notes">Notes</label>
+      <textarea
+        id="notes"
+        placeholder="Optional ministry notes..."
+      ></textarea>
+
+      <button class="primary" type="submit" id="saveReportButton">
+        Save daily report
+      </button>
+
+      <button
+        class="secondary"
+        type="button"
+        id="cancelEditButton"
+        style="display:none;width:100%;"
+      >
+        Cancel editing
+      </button>
+
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>My daily reports</h2>
+
+    <label for="reportsMonthFilter">
+      Show reports for month
+    </label>
+
+    <input type="month" id="reportsMonthFilter">
+
+    <div id="reportsList"></div>
+  </div>
+
 </section>
 
 <!-- SCHEDULE -->
 <section id="schedule" class="section">
-<div class="card">
-<h2>Add schedule</h2>
-<form id="scheduleForm">
-<label for="eventTitle">Activity title</label>
-<input id="eventTitle" placeholder="Example: House-to-house ministry" required>
-<div class="two">
-<div><label for="eventDate">Date</label><input type="date" id="eventDate" required></div>
-<div><label for="eventTime">Time</label><input type="time" id="eventTime"></div>
-</div>
-<label for="eventLocation">Location</label>
-<input id="eventLocation" placeholder="Optional location">
-<label for="eventNotes">Notes</label>
-<textarea id="eventNotes" placeholder="Meeting point, preparation, etc."></textarea>
-<button class="primary" type="submit">Add to schedule</button>
-</form>
-</div>
-<div class="card">
-<h2>My schedule</h2>
-<div id="scheduleList"></div>
-</div>
+
+  <div class="card">
+    <h2>Add schedule</h2>
+
+    <form id="scheduleForm">
+
+      <label for="eventTitle">Activity title</label>
+      <input
+        id="eventTitle"
+        placeholder="Example: House-to-house ministry"
+        required
+      >
+
+      <div class="two">
+        <div>
+          <label for="eventDate">Date</label>
+          <input type="date" id="eventDate" required>
+        </div>
+
+        <div>
+          <label for="eventTime">Time</label>
+          <input type="time" id="eventTime">
+        </div>
+      </div>
+
+      <label for="eventLocation">Location</label>
+      <input
+        id="eventLocation"
+        placeholder="Optional location"
+      >
+
+      <label for="eventNotes">Notes</label>
+      <textarea
+        id="eventNotes"
+        placeholder="Meeting point, preparation, etc."
+      ></textarea>
+
+      <button class="primary" type="submit">
+        Add to schedule
+      </button>
+
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>My schedule</h2>
+    <div id="scheduleList"></div>
+  </div>
+
 </section>
 
 <!-- PEOPLE -->
 <section id="people" class="section">
-<div class="card">
-<h2>Add person</h2>
-<p class="muted">Keep your Bible study and return visit information organized.</p>
-<form id="personForm">
-<label for="personName">Name / nickname</label>
-<input id="personName" placeholder="Enter a name or nickname" required>
-<label for="personType">Type</label>
-<select id="personType">
-<option value="Bible Study">Bible Study</option>
-<option value="Return Visit">Return Visit</option>
-</select>
-<label for="personContact">Contact information</label>
-<input id="personContact" placeholder="Optional phone or other contact">
-<label for="personLast">Last visit / study date</label>
-<input type="date" id="personLast">
-<label for="personNotes">Notes / interests / next topic</label>
-<textarea id="personNotes" placeholder="Optional notes"></textarea>
-<button class="primary" type="submit">Save person</button>
-</form>
-</div>
 
-<div class="card">
-<h2>People list</h2>
-<label for="personFilter">Filter</label>
-<select id="personFilter">
-<option value="All">All</option>
-<option value="Bible Study">Bible Studies</option>
-<option value="Return Visit">Return Visits</option>
-</select>
-<div id="peopleList"></div>
-</div>
+  <div class="card">
+    <h2>Add person</h2>
+
+    <p class="muted">
+      Keep your Bible study and return visit information organized.
+    </p>
+
+    <form id="personForm">
+
+      <label for="personName">Name / nickname</label>
+      <input
+        id="personName"
+        placeholder="Enter a name or nickname"
+        required
+      >
+
+      <label for="personType">Type</label>
+      <select id="personType">
+        <option value="Bible Study">Bible Study</option>
+        <option value="Return Visit">Return Visit</option>
+      </select>
+
+      <label for="personContact">Contact information</label>
+      <input
+        id="personContact"
+        placeholder="Optional phone or other contact"
+      >
+
+      <label for="personLast">Last visit / study date</label>
+      <input type="date" id="personLast">
+
+      <label for="personNotes">
+        Notes / interests / next topic
+      </label>
+
+      <textarea
+        id="personNotes"
+        placeholder="Optional notes"
+      ></textarea>
+
+      <button class="primary" type="submit">
+        Save person
+      </button>
+
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>People list</h2>
+
+    <label for="personFilter">Filter</label>
+
+    <select id="personFilter">
+      <option value="All">All</option>
+      <option value="Bible Study">Bible Studies</option>
+      <option value="Return Visit">Return Visits</option>
+    </select>
+
+    <div id="peopleList"></div>
+  </div>
+
 </section>
 
+<!-- BACKUP -->
 <div class="card">
-<h2>Backup and data</h2>
-<p class="muted">Export your reports, schedules, and profiles. Import a previous backup to restore data on this device.</p>
-<div class="actions">
-<button class="secondary" id="exportBtn" type="button">Export backup</button>
-<button class="secondary" id="importBtn" type="button">Import backup</button>
-<input type="file" id="importFile" accept=".json,application/json" style="display:none">
-<button class="danger" id="clearBtn" type="button">Delete all data</button>
-</div>
+  <h2>Backup and data</h2>
+
+  <p class="muted">
+    Export your reports, schedules, and profiles.
+    Import a previous backup to restore data on this device.
+  </p>
+
+  <div class="actions">
+    <button class="secondary" id="exportBtn" type="button">
+      Export backup
+    </button>
+
+    <button class="secondary" id="importBtn" type="button">
+      Import backup
+    </button>
+
+    <input
+      type="file"
+      id="importFile"
+      accept=".json,application/json"
+      style="display:none"
+    >
+
+    <button class="danger" id="clearBtn" type="button">
+      Delete all data
+    </button>
+  </div>
 </div>
 
 </main>
@@ -204,135 +634,848 @@ main{padding:12px}
 (function(){
 "use strict";
 
-var KEY="ministry_tracker_v2";
-var data={reports:[],schedule:[],people:[]};
+var KEY = "ministry_tracker_v2";
 
-function $(id){return document.getElementById(id);}
-function uid(){return Date.now()+"_"+Math.random().toString(36).slice(2);}
-function esc(v){return String(v==null?"":v).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){alert("Could not save data on this device.");}}
-function load(){try{var s=localStorage.getItem(KEY);if(s){var x=JSON.parse(s);if(x&&typeof x==="object"){data.reports=Array.isArray(x.reports)?x.reports:[];data.schedule=Array.isArray(x.schedule)?x.schedule:[];data.people=Array.isArray(x.people)?x.people:[];}}}catch(e){}}
-function fmt(min){return Math.floor(min/60)+":"+String(min%60).padStart(2,"0");}
-function dateText(s){if(!s)return "No date";return new Date(s+"T12:00:00").toLocaleDateString();}
-function monthText(s){if(!s)return "";var p=s.split("-");return new Date(Number(p[0]),Number(p[1])-1,1).toLocaleDateString(undefined,{month:"long",year:"numeric"});}
-function nowMonth(){return new Date().toISOString().slice(0,7);}
+var data = {
+  reports: [],
+  schedule: [],
+  people: []
+};
+
+var editingReportId = null;
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function uid(){
+  return String(new Date().getTime()) + "_" +
+    Math.random().toString(36).slice(2);
+}
+
+function esc(value){
+  return String(value == null ? "" : value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function pad2(number){
+  return number < 10 ? "0" + number : String(number);
+}
+
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(data));
+  }catch(error){
+    alert("Could not save data on this device.");
+  }
+}
+
+function load(){
+  try{
+    var saved = localStorage.getItem(KEY);
+
+    if(saved){
+      var parsed = JSON.parse(saved);
+
+      if(parsed && typeof parsed === "object"){
+        data.reports = Array.isArray(parsed.reports)
+          ? parsed.reports : [];
+
+        data.schedule = Array.isArray(parsed.schedule)
+          ? parsed.schedule : [];
+
+        data.people = Array.isArray(parsed.people)
+          ? parsed.people : [];
+      }
+    }
+  }catch(error){
+    data = {
+      reports: [],
+      schedule: [],
+      people: []
+    };
+  }
+}
+
+function fmt(totalMinutes){
+  totalMinutes = Number(totalMinutes) || 0;
+
+  return Math.floor(totalMinutes / 60) +
+    ":" +
+    pad2(totalMinutes % 60);
+}
+
+function dateText(value){
+  if(!value){
+    return "No date";
+  }
+
+  var parts = value.split("-");
+  var date = new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    Number(parts[2] || 1)
+  );
+
+  return date.toLocaleDateString();
+}
+
+function monthText(value){
+  if(!value){
+    return "";
+  }
+
+  var parts = value.split("-");
+  var date = new Date(
+    Number(parts[0]),
+    Number(parts[1]) - 1,
+    1
+  );
+
+  return date.toLocaleDateString(undefined,{
+    month:"long",
+    year:"numeric"
+  });
+}
+
+function nowDate(){
+  var date = new Date();
+
+  return date.getFullYear() +
+    "-" +
+    pad2(date.getMonth() + 1) +
+    "-" +
+    pad2(date.getDate());
+}
+
+function nowMonth(){
+  return nowDate().slice(0,7);
+}
+
+function reportDate(report){
+  /*
+    New reports use report.date.
+
+    Older reports from the previous version only have
+    report.month, so they remain visible as month reports.
+  */
+  return report.date || report.month || "";
+}
+
+function reportMonth(report){
+  var value = reportDate(report);
+
+  return value.slice(0,7);
+}
+
+function reportMinutes(report){
+  return (Number(report.hours) || 0) * 60 +
+    (Number(report.minutes) || 0);
+}
 
 function showTab(id){
-document.querySelectorAll(".section").forEach(function(s){s.classList.toggle("active",s.id===id);});
-document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("active",b.dataset.tab===id);});
-renderAll();
+  var sections = document.querySelectorAll(".section");
+
+  for(var i = 0; i < sections.length; i++){
+    sections[i].classList.toggle(
+      "active",
+      sections[i].id === id
+    );
+  }
+
+  var buttons = document.querySelectorAll("nav button");
+
+  for(var j = 0; j < buttons.length; j++){
+    buttons[j].classList.toggle(
+      "active",
+      buttons[j].getAttribute("data-tab") === id
+    );
+  }
+
+  renderAll();
 }
-document.querySelectorAll("nav button").forEach(function(b){b.addEventListener("click",function(){showTab(b.dataset.tab);});});
+
+var navButtons = document.querySelectorAll("nav button");
+
+for(var n = 0; n < navButtons.length; n++){
+  navButtons[n].addEventListener("click",function(){
+    showTab(this.getAttribute("data-tab"));
+  });
+}
+
+/* DASHBOARD */
 
 function renderDashboard(){
-var month=$("dashboardMonth").value||nowMonth();
-var rs=data.reports.filter(function(r){return r.month===month;});
-var mins=0,studies=0,visits=0;
-rs.forEach(function(r){mins+=r.hours*60+r.minutes;studies+=r.studies;visits+=r.visits;});
-$("totalHours").textContent=fmt(mins);
-$("totalStudies").textContent=studies;
-$("totalVisits").textContent=visits;
-$("totalReports").textContent=rs.length;
 
-var months=[];
-for(var i=5;i>=0;i--){
-var d=new Date(Number(month.slice(0,4)),Number(month.slice(5))-1-i,1);
-var key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
-var total=0;
-data.reports.filter(function(r){return r.month===key;}).forEach(function(r){total+=r.hours*60+r.minutes;});
-months.push({key:key,total:total});
+  var month = $("dashboardMonth").value || nowMonth();
+
+  var reports = data.reports.filter(function(report){
+    return reportMonth(report) === month;
+  });
+
+  var totalMinutes = 0;
+  var studies = 0;
+  var visits = 0;
+
+  reports.forEach(function(report){
+    totalMinutes += reportMinutes(report);
+    studies += Number(report.studies) || 0;
+    visits += Number(report.visits) || 0;
+  });
+
+  $("totalHours").textContent = fmt(totalMinutes);
+  $("totalStudies").textContent = studies;
+  $("totalVisits").textContent = visits;
+  $("totalReports").textContent = reports.length;
+
+  renderDailyChart(month);
+
+  var today = nowDate();
+
+  var upcoming = data.schedule
+    .filter(function(event){
+      return event.date >= today;
+    })
+    .sort(function(a,b){
+      return (a.date + a.time).localeCompare(
+        b.date + b.time
+      );
+    })
+    .slice(0,5);
+
+  if(upcoming.length){
+    $("upcomingDashboard").innerHTML = upcoming.map(function(event){
+      return '<div class="report">' +
+        '<strong>' + esc(event.title) + '</strong>' +
+        '<p>' +
+        dateText(event.date) +
+        (event.time ? " · " + esc(event.time) : "") +
+        '</p>' +
+        '</div>';
+    }).join("");
+  }else{
+    $("upcomingDashboard").innerHTML =
+      '<p class="muted">No upcoming activities.</p>';
+  }
 }
-var max=1;
-months.forEach(function(m){if(m.total>max)max=m.total;});
-$("hoursChart").innerHTML=months.map(function(m){
-var h=Math.round(m.total/max*145);
-return '<div class="barwrap"><div class="barvalue">'+Math.floor(m.total/60)+'h</div><div class="bar" style="height:'+h+'px"></div><div class="barlabel">'+esc(m.key.slice(5))+'</div></div>';
-}).join("");
 
-var upcoming=data.schedule.filter(function(e){return e.date>=new Date().toISOString().slice(0,10);}).sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);}).slice(0,5);
-$("upcomingDashboard").innerHTML=upcoming.length?upcoming.map(function(e){return '<div class="report"><strong>'+esc(e.title)+'</strong><p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p></div>';}).join(""):'<p class="muted">No upcoming activities.</p>';
+function renderDailyChart(month){
+
+  var parts = month.split("-");
+  var year = Number(parts[0]);
+  var monthNumber = Number(parts[1]);
+
+  var daysInMonth = new Date(
+    year,
+    monthNumber,
+    0
+  ).getDate();
+
+  var daily = [];
+  var maxMinutes = 1;
+
+  for(var day = 1; day <= daysInMonth; day++){
+
+    var dateKey = year +
+      "-" +
+      pad2(monthNumber) +
+      "-" +
+      pad2(day);
+
+    var total = 0;
+
+    data.reports.forEach(function(report){
+
+      /*
+        Old monthly reports cannot be assigned to a specific day.
+        They are excluded from the daily graph.
+      */
+      if(report.date === dateKey){
+        total += reportMinutes(report);
+      }
+
+    });
+
+    if(total > maxMinutes){
+      maxMinutes = total;
+    }
+
+    daily.push({
+      day: day,
+      total: total
+    });
+  }
+
+  /*
+    Show every day, but keep the graph readable.
+    On long months, labels are shown every few days.
+  */
+  $("hoursChart").innerHTML = daily.map(function(item){
+
+    var height = Math.round(
+      item.total / maxMinutes * 145
+    );
+
+    var label = item.day;
+
+    if(daysInMonth > 20 && item.day % 2 !== 0){
+      label = "";
+    }
+
+    return '<div class="barwrap">' +
+      '<div class="barvalue">' +
+      (item.total ? (item.total / 60).toFixed(1) + "h" : "") +
+      '</div>' +
+      '<div class="bar" style="height:' + height + 'px"></div>' +
+      '<div class="barlabel">' + label + '</div>' +
+      '</div>';
+
+  }).join("");
 }
 
-$("dashboardMonth").value=nowMonth();
-$("dashboardMonth").addEventListener("change",renderDashboard);
+$("dashboardMonth").value = nowMonth();
 
-$("reportForm").addEventListener("submit",function(e){
-e.preventDefault();
-var h=Number($("hours").value),m=Number($("minutes").value);
-if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59){alert("Enter valid hours and minutes.");return;}
-data.reports.push({id:uid(),month:$("month").value,hours:h,minutes:m,studies:Number($("studies").value)||0,visits:Number($("visits").value)||0,notes:$("notes").value.trim()});
-save();this.reset();$("month").value=nowMonth();renderAll();alert("Report saved.");
+$("dashboardMonth").addEventListener("change",function(){
+  renderDashboard();
+});
+
+/* REPORT FORM */
+
+function resetReportForm(){
+
+  editingReportId = null;
+
+  $("reportFormTitle").textContent =
+    "Add daily ministry report";
+
+  $("saveReportButton").textContent =
+    "Save daily report";
+
+  $("cancelEditButton").style.display =
+    "none";
+
+  $("reportFormCard").classList.remove("editing");
+
+  $("reportForm").reset();
+
+  $("reportDate").value = nowDate();
+  $("hours").value = "0";
+  $("minutes").value = "0";
+  $("studies").value = "0";
+  $("visits").value = "0";
+}
+
+function startEditReport(id){
+
+  var report = data.reports.find(function(item){
+    return String(item.id) === String(id);
+  });
+
+  if(!report){
+    return;
+  }
+
+  editingReportId = report.id;
+
+  $("reportFormTitle").textContent =
+    "Edit daily ministry report";
+
+  $("saveReportButton").textContent =
+    "Update daily report";
+
+  $("cancelEditButton").style.display =
+    "block";
+
+  $("reportFormCard").classList.add("editing");
+
+  /*
+    If editing an old monthly report, use the first day
+    of that month as the editable date.
+  */
+  $("reportDate").value =
+    report.date || report.month + "-01";
+
+  $("hours").value =
+    Number(report.hours) || 0;
+
+  $("minutes").value =
+    Number(report.minutes) || 0;
+
+  $("studies").value =
+    Number(report.studies) || 0;
+
+  $("visits").value =
+    Number(report.visits) || 0;
+
+  $("notes").value =
+    report.notes || "";
+
+  showTab("reports");
+
+  window.scrollTo(0,0);
+}
+
+$("reportForm").addEventListener("submit",function(event){
+
+  event.preventDefault();
+
+  var date = $("reportDate").value;
+  var hours = Number($("hours").value);
+  var minutes = Number($("minutes").value);
+  var studies = Number($("studies").value);
+  var visits = Number($("visits").value);
+  var notes = $("notes").value.trim();
+
+  if(!date){
+    alert("Please select a date.");
+    return;
+  }
+
+  if(!isFinite(hours) ||
+     !isFinite(minutes) ||
+     hours < 0 ||
+     minutes < 0 ||
+     minutes > 59){
+
+    alert("Enter valid hours and minutes.");
+    return;
+  }
+
+  if(!isFinite(studies) || studies < 0){
+    alert("Enter a valid number of Bible studies.");
+    return;
+  }
+
+  if(!isFinite(visits) || visits < 0){
+    alert("Enter a valid number of return visits.");
+    return;
+  }
+
+  var report = {
+    id: editingReportId || uid(),
+    date: date,
+    month: date.slice(0,7),
+    hours: hours,
+    minutes: minutes,
+    studies: studies,
+    visits: visits,
+    notes: notes
+  };
+
+  if(editingReportId){
+
+    data.reports = data.reports.map(function(item){
+      return String(item.id) === String(editingReportId)
+        ? report
+        : item;
+    });
+
+    alert("Daily report updated.");
+
+  }else{
+
+    data.reports.push(report);
+
+    alert("Daily report saved.");
+  }
+
+  save();
+
+  $("reportsMonthFilter").value =
+    date.slice(0,7);
+
+  resetReportForm();
+  renderAll();
+});
+
+$("cancelEditButton").addEventListener("click",function(){
+  resetReportForm();
 });
 
 function renderReports(){
-$("reportsList").innerHTML=data.reports.length?data.reports.slice().reverse().map(function(r){
-return '<div class="report"><strong>'+esc(monthText(r.month))+'</strong><p>Hours: '+fmt(r.hours*60+r.minutes)+' · Bible studies: '+r.studies+' · Return visits: '+r.visits+'</p>'+(r.notes?'<p>'+esc(r.notes)+'</p>':'')+'<div class="actions"><button class="danger" data-delete-report="'+esc(r.id)+'">Delete</button></div></div>';
-}).join(""):'<p class="muted">No reports yet.</p>';
+
+  var selectedMonth =
+    $("reportsMonthFilter").value || nowMonth();
+
+  var reports = data.reports
+    .filter(function(report){
+      return reportMonth(report) === selectedMonth;
+    })
+    .slice()
+    .sort(function(a,b){
+      return reportDate(b).localeCompare(
+        reportDate(a)
+      );
+    });
+
+  if(!reports.length){
+
+    $("reportsList").innerHTML =
+      '<p class="muted">No reports for this month.</p>';
+
+    return;
+  }
+
+  $("reportsList").innerHTML = reports.map(function(report){
+
+    var date = report.date
+      ? dateText(report.date)
+      : monthText(report.month) + " (old monthly report)";
+
+    return '<div class="report">' +
+
+      '<strong>' + esc(date) + '</strong>' +
+
+      '<p>' +
+      'Hours: ' + fmt(reportMinutes(report)) +
+      ' · Bible studies: ' + (Number(report.studies) || 0) +
+      ' · Return visits: ' + (Number(report.visits) || 0) +
+      '</p>' +
+
+      (report.notes
+        ? '<p>' + esc(report.notes) + '</p>'
+        : '') +
+
+      '<div class="actions">' +
+
+      '<button class="secondary" ' +
+      'data-edit-report="' + esc(report.id) + '">' +
+      'Edit' +
+      '</button>' +
+
+      '<button class="danger" ' +
+      'data-delete-report="' + esc(report.id) + '">' +
+      'Delete' +
+      '</button>' +
+
+      '</div>' +
+
+      '</div>';
+
+  }).join("");
 }
-$("reportsList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-report]");
-if(b&&confirm("Delete this report?")){data.reports=data.reports.filter(function(r){return r.id!==b.dataset.deleteReport;});save();renderAll();}
+
+$("reportsMonthFilter").value = nowMonth();
+
+$("reportsMonthFilter").addEventListener("change",function(){
+  renderReports();
 });
 
-$("scheduleForm").addEventListener("submit",function(e){
-e.preventDefault();
-data.schedule.push({id:uid(),title:$("eventTitle").value.trim(),date:$("eventDate").value,time:$("eventTime").value,location:$("eventLocation").value.trim(),notes:$("eventNotes").value.trim()});
-save();this.reset();renderAll();alert("Schedule added.");
+$("reportsList").addEventListener("click",function(event){
+
+  var target = event.target;
+
+  var editId = target.getAttribute("data-edit-report");
+
+  if(editId){
+    startEditReport(editId);
+    return;
+  }
+
+  var deleteId = target.getAttribute("data-delete-report");
+
+  if(deleteId){
+
+    if(confirm("Delete this daily report?")){
+
+      data.reports = data.reports.filter(function(report){
+        return String(report.id) !== String(deleteId);
+      });
+
+      save();
+      renderAll();
+    }
+  }
 });
+
+/* SCHEDULE */
+
+$("scheduleForm").addEventListener("submit",function(event){
+
+  event.preventDefault();
+
+  data.schedule.push({
+    id: uid(),
+    title: $("eventTitle").value.trim(),
+    date: $("eventDate").value,
+    time: $("eventTime").value,
+    location: $("eventLocation").value.trim(),
+    notes: $("eventNotes").value.trim()
+  });
+
+  save();
+
+  this.reset();
+  renderAll();
+
+  alert("Schedule added.");
+});
+
 function renderSchedule(){
-var list=data.schedule.slice().sort(function(a,b){return (a.date+a.time).localeCompare(b.date+b.time);});
-$("scheduleList").innerHTML=list.length?list.map(function(e){
-return '<div class="report"><strong>'+esc(e.title)+'</strong><p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p>'+(e.location?'<p>📍 '+esc(e.location)+'</p>':'')+(e.notes?'<p>'+esc(e.notes)+'</p>':'')+'<button class="danger" data-delete-event="'+esc(e.id)+'">Delete</button></div>';
-}).join(""):'<p class="muted">No scheduled activities.</p>';
+
+  var list = data.schedule
+    .slice()
+    .sort(function(a,b){
+      return (a.date + a.time).localeCompare(
+        b.date + b.time
+      );
+    });
+
+  if(!list.length){
+
+    $("scheduleList").innerHTML =
+      '<p class="muted">No scheduled activities.</p>';
+
+    return;
+  }
+
+  $("scheduleList").innerHTML = list.map(function(event){
+
+    return '<div class="report">' +
+
+      '<strong>' + esc(event.title) + '</strong>' +
+
+      '<p>' +
+      dateText(event.date) +
+      (event.time ? " · " + esc(event.time) : "") +
+      '</p>' +
+
+      (event.location
+        ? '<p>📍 ' + esc(event.location) + '</p>'
+        : '') +
+
+      (event.notes
+        ? '<p>' + esc(event.notes) + '</p>'
+        : '') +
+
+      '<button class="danger" ' +
+      'data-delete-event="' + esc(event.id) + '">' +
+      'Delete' +
+      '</button>' +
+
+      '</div>';
+
+  }).join("");
 }
-$("scheduleList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-event]");
-if(b&&confirm("Delete this schedule?")){data.schedule=data.schedule.filter(function(x){return x.id!==b.dataset.deleteEvent;});save();renderAll();}
+
+$("scheduleList").addEventListener("click",function(event){
+
+  var deleteId =
+    event.target.getAttribute("data-delete-event");
+
+  if(deleteId && confirm("Delete this schedule?")){
+
+    data.schedule = data.schedule.filter(function(item){
+      return String(item.id) !== String(deleteId);
+    });
+
+    save();
+    renderAll();
+  }
 });
 
-$("personForm").addEventListener("submit",function(e){
-e.preventDefault();
-data.people.push({id:uid(),name:$("personName").value.trim(),type:$("personType").value,contact:$("personContact").value.trim(),last:$("personLast").value,notes:$("personNotes").value.trim()});
-save();this.reset();renderAll();alert("Person saved.");
+/* PEOPLE */
+
+$("personForm").addEventListener("submit",function(event){
+
+  event.preventDefault();
+
+  data.people.push({
+    id: uid(),
+    name: $("personName").value.trim(),
+    type: $("personType").value,
+    contact: $("personContact").value.trim(),
+    last: $("personLast").value,
+    notes: $("personNotes").value.trim()
+  });
+
+  save();
+
+  this.reset();
+  renderAll();
+
+  alert("Person saved.");
 });
-$("personFilter").addEventListener("change",renderPeople);
+
+$("personFilter").addEventListener("change",function(){
+  renderPeople();
+});
+
 function renderPeople(){
-var filter=$("personFilter").value;
-var list=data.people.filter(function(p){return filter==="All"||p.type===filter;});
-$("peopleList").innerHTML=list.length?list.map(function(p){
-return '<div class="profile"><h3>'+esc(p.name)+'</h3><span class="pill">'+esc(p.type)+'</span>'+(p.contact?'<p>Contact: '+esc(p.contact)+'</p>':'')+(p.last?'<p>Last visit: '+dateText(p.last)+'</p>':'')+(p.notes?'<p>'+esc(p.notes)+'</p>':'')+'<button class="danger" data-delete-person="'+esc(p.id)+'">Delete</button></div>';
-}).join(""):'<p class="muted">No people added.</p>';
+
+  var filter = $("personFilter").value;
+
+  var list = data.people.filter(function(person){
+    return filter === "All" || person.type === filter;
+  });
+
+  if(!list.length){
+
+    $("peopleList").innerHTML =
+      '<p class="muted">No people added.</p>';
+
+    return;
+  }
+
+  $("peopleList").innerHTML = list.map(function(person){
+
+    return '<div class="profile">' +
+
+      '<h3>' + esc(person.name) + '</h3>' +
+
+      '<span class="pill">' +
+      esc(person.type) +
+      '</span>' +
+
+      (person.contact
+        ? '<p>Contact: ' + esc(person.contact) + '</p>'
+        : '') +
+
+      (person.last
+        ? '<p>Last visit: ' + dateText(person.last) + '</p>'
+        : '') +
+
+      (person.notes
+        ? '<p>' + esc(person.notes) + '</p>'
+        : '') +
+
+      '<button class="danger" ' +
+      'data-delete-person="' + esc(person.id) + '">' +
+      'Delete' +
+      '</button>' +
+
+      '</div>';
+
+  }).join("");
 }
-$("peopleList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-person]");
-if(b&&confirm("Delete this person?")){data.people=data.people.filter(function(p){return p.id!==b.dataset.deletePerson;});save();renderAll();}
+
+$("peopleList").addEventListener("click",function(event){
+
+  var deleteId =
+    event.target.getAttribute("data-delete-person");
+
+  if(deleteId && confirm("Delete this person?")){
+
+    data.people = data.people.filter(function(person){
+      return String(person.id) !== String(deleteId);
+    });
+
+    save();
+    renderAll();
+  }
 });
+
+/* BACKUP */
 
 $("exportBtn").addEventListener("click",function(){
-var blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
-var url=URL.createObjectURL(blob),a=document.createElement("a");
-a.href=url;a.download="ministry-tracker-backup.json";a.click();URL.revokeObjectURL(url);
-});
-$("importBtn").addEventListener("click",function(){$("importFile").click();});
-$("importFile").addEventListener("change",function(){
-var file=this.files[0];if(!file)return;
-var reader=new FileReader();
-reader.onload=function(){
-try{
-var x=JSON.parse(reader.result);
-if(!x||!Array.isArray(x.reports)||!Array.isArray(x.schedule)||!Array.isArray(x.people))throw new Error();
-if(confirm("Replace all current data with this backup?")){data=x;save();renderAll();alert("Backup imported.");}
-}catch(e){alert("Invalid backup file.");}
-};
-reader.readAsText(file);this.value="";
-});
-$("clearBtn").addEventListener("click",function(){
-if(confirm("Delete ALL reports, schedules, and profiles from this device?")){data={reports:[],schedule:[],people:[]};save();renderAll();}
+
+  var blob = new Blob(
+    [JSON.stringify(data,null,2)],
+    {type:"application/json"}
+  );
+
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
+
+  link.href = url;
+  link.download = "ministry-tracker-backup.json";
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
 });
 
-function renderAll(){renderDashboard();renderReports();renderSchedule();renderPeople();}
-load();renderAll();
+$("importBtn").addEventListener("click",function(){
+  $("importFile").click();
+});
+
+$("importFile").addEventListener("change",function(){
+
+  var file = this.files[0];
+
+  if(!file){
+    return;
+  }
+
+  var reader = new FileReader();
+
+  reader.onload = function(){
+
+    try{
+
+      var imported = JSON.parse(reader.result);
+
+      if(!imported ||
+         !Array.isArray(imported.reports) ||
+         !Array.isArray(imported.schedule) ||
+         !Array.isArray(imported.people)){
+
+        throw new Error("Invalid backup");
+      }
+
+      if(confirm(
+        "Replace all current data with this backup?"
+      )){
+
+        data = imported;
+
+        save();
+        renderAll();
+
+        alert("Backup imported.");
+      }
+
+    }catch(error){
+
+      alert("Invalid backup file.");
+
+    }
+
+  };
+
+  reader.readAsText(file);
+  this.value = "";
+});
+
+$("clearBtn").addEventListener("click",function(){
+
+  if(confirm(
+    "Delete ALL reports, schedules, and profiles from this device?"
+  )){
+
+    data = {
+      reports: [],
+      schedule: [],
+      people: []
+    };
+
+    save();
+    resetReportForm();
+    renderAll();
+  }
+});
+
+/* RENDER */
+
+function renderAll(){
+  renderDashboard();
+  renderReports();
+  renderSchedule();
+  renderPeople();
+}
+
+load();
+resetReportForm();
+renderAll();
+
 })();
 </script>
+
 </body>
 </html>
