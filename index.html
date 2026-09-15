@@ -181,6 +181,14 @@ font-size:13px;
 margin-top:12px;
 }
 
+.section{
+display:none;
+}
+
+.section.active{
+display:block;
+}
+
 .report,
 .profile{
 border:1px solid #e1e7f0;
@@ -218,12 +226,9 @@ font-size:12px;
 font-weight:600;
 }
 
-.section{
-display:none;
-}
-
-.section.active{
-display:block;
+.pill.interested{
+background:#fef3c7;
+color:#92400e;
 }
 
 .chart{
@@ -384,7 +389,8 @@ padding:14px;
 <button class="active" data-tab="dashboard">Dashboard</button>
 <button data-tab="reports">Reports</button>
 <button data-tab="schedule">Schedule</button>
-<button data-tab="people">People</button>
+<button data-tab="bibleStudies">Bible Studies</button>
+<button data-tab="interested">Interested</button>
 </nav>
 
 <main>
@@ -501,7 +507,7 @@ You may select as many people as needed.
 
 <div id="studyPeopleChoices" class="peopleChoices">
 <p class="muted">
-No Bible study people yet. Add them in the People tab first.
+No Bible study people yet. Add them in the Bible Studies tab first.
 </p>
 </div>
 
@@ -592,57 +598,104 @@ Add to schedule
 
 </section>
 
-<!-- PEOPLE -->
-<section id="people" class="section">
+<!-- BIBLE STUDIES -->
+<section id="bibleStudies" class="section">
 
 <div class="card">
-<h2>Add person</h2>
+<h2>Add Bible Study</h2>
 
 <p class="muted">
-Add people here first. People marked as “Bible Studies”
-will appear as selectable names in the Reports tab.
+Bible Studies added here will appear as selectable people in the Reports tab.
 </p>
 
-<form id="personForm">
+<form id="bibleStudyForm">
 
-<label for="personName">Name / nickname</label>
-<input id="personName" placeholder="Enter a name or nickname" required>
+<label for="bibleStudyName">Name / nickname</label>
+<input id="bibleStudyName" placeholder="Enter a name or nickname" required>
 
-<label for="personType">Type</label>
+<label for="bibleStudyContact">Contact information</label>
+<input id="bibleStudyContact" placeholder="Optional phone or other contact">
 
-<select id="personType">
-<option value="Bible Studies">Bible Studies</option>
-<option value="Return Visit">Return Visit</option>
-</select>
+<label for="bibleStudyLastDate">Last study date</label>
+<input type="date" id="bibleStudyLastDate">
 
-<label for="personContact">Contact information</label>
-<input id="personContact" placeholder="Optional phone or other contact">
+<label for="bibleStudyLastTopic">
+What did we study last time?
+</label>
 
-<label for="personLast">Last visit / study date</label>
-<input type="date" id="personLast">
+<textarea
+id="bibleStudyLastTopic"
+placeholder="Example: We studied prayer, Jehovah's Kingdom, or Lesson 5..."
+></textarea>
 
-<label for="personNotes">Notes / interests / next topic</label>
-<textarea id="personNotes" placeholder="Optional notes"></textarea>
+<label for="bibleStudyNotes">Other notes</label>
+
+<textarea
+id="bibleStudyNotes"
+placeholder="Next topic, interests, progress, reminders..."
+></textarea>
 
 <button class="primary" type="submit">
-Save person
+Save Bible Study
 </button>
 
 </form>
 </div>
 
 <div class="card">
-<h2>People list</h2>
+<h2>Bible Studies List</h2>
 
-<label for="personFilter">Filter</label>
+<div id="bibleStudiesList"></div>
+</div>
 
-<select id="personFilter">
-<option value="All">All</option>
-<option value="Bible Studies">Bible Studies</option>
-<option value="Return Visit">Return Visits</option>
-</select>
+</section>
 
-<div id="peopleList"></div>
+<!-- INTERESTED -->
+<section id="interested" class="section">
+
+<div class="card">
+<h2>Add Interested Person</h2>
+
+<p class="muted">
+Use this page for people who show interest but are not yet Bible Studies.
+</p>
+
+<form id="interestedForm">
+
+<label for="interestedName">Name / nickname</label>
+<input id="interestedName" placeholder="Enter a name or nickname" required>
+
+<label for="interestedContact">Contact information</label>
+<input id="interestedContact" placeholder="Optional phone or other contact">
+
+<label for="interestedDate">Date contacted</label>
+<input type="date" id="interestedDate">
+
+<label for="interestedTopic">What are they interested in?</label>
+
+<textarea
+id="interestedTopic"
+placeholder="Example: Family, hope, Bible prophecy, suffering..."
+></textarea>
+
+<label for="interestedNotes">Notes</label>
+
+<textarea
+id="interestedNotes"
+placeholder="Next visit, possible topic, location, reminders..."
+></textarea>
+
+<button class="primary" type="submit">
+Save Interested Person
+</button>
+
+</form>
+</div>
+
+<div class="card">
+<h2>Interested People List</h2>
+
+<div id="interestedList"></div>
 </div>
 
 </section>
@@ -652,11 +705,12 @@ Save person
 <h2>Backup and data</h2>
 
 <p class="muted">
-Export your reports, schedules, and profiles.
+Export your reports, schedules, Bible Studies, and Interested people.
 Import a previous backup to restore data on this device.
 </p>
 
 <div class="actions">
+
 <button class="secondary" id="exportBtn" type="button">
 Export backup
 </button>
@@ -675,6 +729,7 @@ style="display:none"
 <button class="danger" id="clearBtn" type="button">
 Delete all data
 </button>
+
 </div>
 </div>
 
@@ -689,7 +744,8 @@ var KEY="ministry_tracker_v2";
 var data={
 reports:[],
 schedule:[],
-people:[]
+people:[],
+interested:[]
 };
 
 function $(id){
@@ -712,40 +768,64 @@ return String(value==null?"":value)
 function save(){
 try{
 localStorage.setItem(KEY,JSON.stringify(data));
-}catch(e){
+}catch(error){
 alert("Could not save data on this device.");
 }
 }
 
 function load(){
+
 try{
+
 var saved=localStorage.getItem(KEY);
 
 if(saved){
+
 var oldData=JSON.parse(saved);
 
 if(oldData&&typeof oldData==="object"){
-data.reports=Array.isArray(oldData.reports)?oldData.reports:[];
-data.schedule=Array.isArray(oldData.schedule)?oldData.schedule:[];
-data.people=Array.isArray(oldData.people)?oldData.people:[];
+
+data.reports=Array.isArray(oldData.reports)?
+oldData.reports:[];
+
+data.schedule=Array.isArray(oldData.schedule)?
+oldData.schedule:[];
+
+data.people=Array.isArray(oldData.people)?
+oldData.people:[];
+
+data.interested=Array.isArray(oldData.interested)?
+oldData.interested:[];
+
 }
+
 }
-}catch(e){}
+
+}catch(error){}
+
 }
 
 function fmt(minutes){
-return Math.floor(minutes/60)+":"+String(minutes%60).padStart(2,"0");
+return Math.floor(minutes/60)+":"+
+String(minutes%60).padStart(2,"0");
 }
 
 function dateText(date){
-if(!date)return "No date";
+
+if(!date){
+return "No date";
+}
 
 return new Date(date+"T12:00:00")
 .toLocaleDateString();
+
 }
 
 function monthText(month){
-if(!month)return "";
+
+if(!month){
+return "";
+}
 
 var parts=month.split("-");
 
@@ -757,6 +837,7 @@ Number(parts[1])-1,
 month:"long",
 year:"numeric"
 });
+
 }
 
 function nowDate(){
@@ -783,8 +864,10 @@ Number(report.minutes||0);
 }
 
 function isBibleStudyPerson(person){
+
 return person.type==="Bible Studies"||
 person.type==="Bible Study";
+
 }
 
 /* NAVIGATION */
@@ -802,13 +885,16 @@ button.classList.toggle("active",button.dataset.tab===id);
 });
 
 renderAll();
+
 }
 
 document.querySelectorAll("nav button")
 .forEach(function(button){
+
 button.addEventListener("click",function(){
 showTab(button.dataset.tab);
 });
+
 });
 
 /* CHARTS */
@@ -818,9 +904,11 @@ function makeBars(items,type){
 var max=1;
 
 items.forEach(function(item){
+
 if(item.total>max){
 max=item.total;
 }
+
 });
 
 return items.map(function(item){
@@ -834,6 +922,7 @@ return '<div class="barwrap">'+
 '</div>';
 
 }).join("");
+
 }
 
 /* DASHBOARD */
@@ -851,9 +940,11 @@ var totalStudies=0;
 var totalVisits=0;
 
 reports.forEach(function(report){
+
 totalMinutes+=reportMinutes(report);
 totalStudies+=Number(report.studies||0);
 totalVisits+=Number(report.visits||0);
+
 });
 
 $("totalHours").textContent=fmt(totalMinutes);
@@ -887,6 +978,7 @@ months.push({
 label:key.slice(5),
 total:Math.round(total/60*10)/10
 });
+
 }
 
 $("hoursChart").innerHTML=makeBars(months,"");
@@ -929,6 +1021,7 @@ daily.push({
 label:String(day),
 total:Math.round(dailyTotal/60*10)/10
 });
+
 }
 
 $("dailyChart").innerHTML=makeBars(daily,"");
@@ -936,10 +1029,6 @@ $("dailyChart").innerHTML=makeBars(daily,"");
 /* People statistics */
 var bibleStudyPeople=data.people.filter(function(person){
 return isBibleStudyPerson(person);
-});
-
-var returnVisitPeople=data.people.filter(function(person){
-return person.type==="Return Visit";
 });
 
 var studiedPeople={};
@@ -965,8 +1054,8 @@ $("peopleStats").innerHTML=
 '</div>'+
 
 '<div class="stat">'+
-'<span>Return visit profiles</span>'+
-'<strong>'+returnVisitPeople.length+'</strong>'+
+'<span>Interested people</span>'+
+'<strong>'+data.interested.length+'</strong>'+
 '</div>'+
 
 '<div class="stat">'+
@@ -976,7 +1065,7 @@ $("peopleStats").innerHTML=
 
 '<div class="stat">'+
 '<span>Total people</span>'+
-'<strong>'+data.people.length+'</strong>'+
+'<strong>'+(data.people.length+data.interested.length)+'</strong>'+
 '</div>'+
 
 '</div>';
@@ -1007,16 +1096,10 @@ return '<div class="report">'+
 :
 
 '<p class="muted">No upcoming activities.</p>';
+
 }
 
-$("dashboardMonth").value=nowMonth();
-
-$("dashboardMonth").addEventListener(
-"change",
-renderDashboard
-);
-
-/* BIBLE STUDY PEOPLE SELECTION */
+/* REPORT BIBLE STUDY SELECTION */
 
 function renderStudyPeopleChoices(){
 
@@ -1028,7 +1111,7 @@ if(!people.length){
 
 $("studyPeopleChoices").innerHTML=
 '<p class="muted">'+
-'No Bible study people yet. Add them in the People tab first.'+
+'No Bible study people yet. Add them in the Bible Studies tab first.'+
 '</p>';
 
 $("studies").value=0;
@@ -1037,6 +1120,7 @@ $("selectedStudyNames").textContent=
 "No Bible study people selected.";
 
 return;
+
 }
 
 $("studyPeopleChoices").innerHTML=people.map(function(person){
@@ -1063,6 +1147,7 @@ updateSelectedStudies
 );
 
 });
+
 }
 
 function updateSelectedStudies(){
@@ -1086,10 +1171,6 @@ selectedNames.push(person.name);
 
 });
 
-/*
-The total is always equal to the number
-of checked Bible study people.
-*/
 $("studies").value=selectedIds.length;
 
 $("selectedStudyNames").innerHTML=
@@ -1103,12 +1184,10 @@ esc(selectedNames.join(", "))
 :
 
 "No Bible study people selected.";
+
 }
 
 /* REPORTS */
-
-$("reportDate").value=nowDate();
-$("reportsMonthFilter").value=nowMonth();
 
 $("reportForm").addEventListener("submit",function(event){
 
@@ -1124,8 +1203,10 @@ hours<0||
 minutes<0||
 minutes>59
 ){
+
 alert("Enter valid hours and minutes.");
 return;
+
 }
 
 var selectedPeople=[];
@@ -1148,15 +1229,8 @@ hours:hours,
 
 minutes:minutes,
 
-/*
-The number is automatically based
-on selected Bible study people.
-*/
 studies:selectedPeople.length,
 
-/*
-The actual selected people are saved.
-*/
 studyPeople:selectedPeople,
 
 visits:Number($("visits").value)||0,
@@ -1180,9 +1254,8 @@ renderStudyPeopleChoices();
 renderAll();
 
 alert("Report saved.");
-});
 
-/* REPORT LIST */
+});
 
 function renderReports(){
 
@@ -1206,11 +1279,7 @@ var person=data.people.find(function(item){
 return item.id===personId;
 });
 
-if(person){
-names.push(person.name);
-}else{
-names.push("Deleted person");
-}
+names.push(person?person.name:"Deleted person");
 
 });
 
@@ -1236,11 +1305,9 @@ esc(report.date?dateText(report.date):monthText(report.month))+
 '<p>'+esc(report.notes)+'</p>':
 '')+
 
-'<div class="actions">'+
 '<button class="danger" data-delete-report="'+
 esc(report.id)+
 '">Delete</button>'+
-'</div>'+
 
 '</div>';
 
@@ -1249,6 +1316,7 @@ esc(report.id)+
 :
 
 '<p class="muted">No reports for this month.</p>';
+
 }
 
 $("reportsMonthFilter").addEventListener(
@@ -1273,6 +1341,7 @@ return report.id!==button.dataset.deleteReport;
 
 save();
 renderAll();
+
 }
 
 });
@@ -1306,6 +1375,7 @@ this.reset();
 renderAll();
 
 alert("Schedule added.");
+
 });
 
 function renderSchedule(){
@@ -1349,6 +1419,7 @@ esc(event.id)+
 :
 
 '<p class="muted">No scheduled activities.</p>';
+
 }
 
 $("scheduleList").addEventListener("click",function(event){
@@ -1368,13 +1439,14 @@ return item.id!==button.dataset.deleteEvent;
 
 save();
 renderAll();
+
 }
 
 });
 
-/* PEOPLE */
+/* BIBLE STUDIES */
 
-$("personForm").addEventListener("submit",function(event){
+$("bibleStudyForm").addEventListener("submit",function(event){
 
 event.preventDefault();
 
@@ -1382,15 +1454,17 @@ data.people.push({
 
 id:uid(),
 
-name:$("personName").value.trim(),
+name:$("bibleStudyName").value.trim(),
 
-type:$("personType").value,
+type:"Bible Studies",
 
-contact:$("personContact").value.trim(),
+contact:$("bibleStudyContact").value.trim(),
 
-last:$("personLast").value,
+last:$("bibleStudyLastDate").value,
 
-notes:$("personNotes").value.trim()
+lastTopic:$("bibleStudyLastTopic").value.trim(),
+
+notes:$("bibleStudyNotes").value.trim()
 
 });
 
@@ -1399,66 +1473,47 @@ save();
 this.reset();
 
 renderStudyPeopleChoices();
-
 renderAll();
 
-alert("Person saved.");
+alert("Bible Study saved.");
+
 });
 
-$("personFilter").addEventListener(
-"change",
-renderPeople
-);
-
-function renderPeople(){
-
-var filter=$("personFilter").value;
+function renderBibleStudies(){
 
 var list=data.people.filter(function(person){
-
-if(filter==="All"){
-return true;
-}
-
-if(filter==="Bible Studies"){
 return isBibleStudyPerson(person);
-}
-
-return person.type===filter;
 });
 
-$("peopleList").innerHTML=list.length?
+$("bibleStudiesList").innerHTML=list.length?
 
 list.map(function(person){
-
-var displayType=
-isBibleStudyPerson(person)?
-"Bible Studies":
-person.type;
 
 return '<div class="profile">'+
 
 '<h3>'+esc(person.name)+'</h3>'+
 
-'<span class="pill">'+
-esc(displayType)+
-'</span>'+
+'<span class="pill">Bible Studies</span>'+
 
 (person.contact?
 '<p>Contact: '+esc(person.contact)+'</p>':
 '')+
 
 (person.last?
-'<p>Last visit/study: '+
-dateText(person.last)+
-'</p>':
+'<p>Last study date: '+dateText(person.last)+'</p>':
+'')+
+
+(person.lastTopic?
+'<p><strong>What we studied last time:</strong><br>'+
+esc(person.lastTopic)+'</p>':
 '')+
 
 (person.notes?
-'<p>'+esc(person.notes)+'</p>':
+'<p><strong>Notes:</strong><br>'+
+esc(person.notes)+'</p>':
 '')+
 
-'<button class="danger" data-delete-person="'+
+'<button class="danger" data-delete-bible-study="'+
 esc(person.id)+
 '">Delete</button>'+
 
@@ -1468,28 +1523,128 @@ esc(person.id)+
 
 :
 
-'<p class="muted">No people added.</p>';
+'<p class="muted">No Bible Studies added yet.</p>';
+
 }
 
-$("peopleList").addEventListener("click",function(event){
+$("bibleStudiesList").addEventListener("click",function(event){
 
 var button=event.target.closest(
-"[data-delete-person]"
+"[data-delete-bible-study]"
 );
 
 if(
 button&&
-confirm("Delete this person?")
+confirm("Delete this Bible Study?")
 ){
 
 data.people=data.people.filter(function(person){
-return person.id!==button.dataset.deletePerson;
+return person.id!==button.dataset.deleteBibleStudy;
 });
 
 save();
 
 renderStudyPeopleChoices();
 renderAll();
+
+}
+
+});
+
+/* INTERESTED */
+
+$("interestedForm").addEventListener("submit",function(event){
+
+event.preventDefault();
+
+data.interested.push({
+
+id:uid(),
+
+name:$("interestedName").value.trim(),
+
+contact:$("interestedContact").value.trim(),
+
+date:$("interestedDate").value,
+
+topic:$("interestedTopic").value.trim(),
+
+notes:$("interestedNotes").value.trim()
+
+});
+
+save();
+
+this.reset();
+
+renderAll();
+
+alert("Interested person saved.");
+
+});
+
+function renderInterested(){
+
+$("interestedList").innerHTML=data.interested.length?
+
+data.interested.map(function(person){
+
+return '<div class="profile">'+
+
+'<h3>'+esc(person.name)+'</h3>'+
+
+'<span class="pill interested">Interested</span>'+
+
+(person.contact?
+'<p>Contact: '+esc(person.contact)+'</p>':
+'')+
+
+(person.date?
+'<p>Date contacted: '+dateText(person.date)+'</p>':
+'')+
+
+(person.topic?
+'<p><strong>Interested in:</strong><br>'+
+esc(person.topic)+'</p>':
+'')+
+
+(person.notes?
+'<p><strong>Notes:</strong><br>'+
+esc(person.notes)+'</p>':
+'')+
+
+'<button class="danger" data-delete-interested="'+
+esc(person.id)+
+'">Delete</button>'+
+
+'</div>';
+
+}).join("")
+
+:
+
+'<p class="muted">No Interested people added yet.</p>';
+
+}
+
+$("interestedList").addEventListener("click",function(event){
+
+var button=event.target.closest(
+"[data-delete-interested]"
+);
+
+if(
+button&&
+confirm("Delete this Interested person?")
+){
+
+data.interested=data.interested.filter(function(person){
+return person.id!==button.dataset.deleteInterested;
+});
+
+save();
+renderAll();
+
 }
 
 });
@@ -1512,6 +1667,7 @@ link.download="ministry-tracker-backup.json";
 link.click();
 
 URL.revokeObjectURL(url);
+
 });
 
 $("importBtn").addEventListener("click",function(){
@@ -1540,7 +1696,13 @@ if(
 !Array.isArray(imported.schedule)||
 !Array.isArray(imported.people)
 ){
+
 throw new Error();
+
+}
+
+if(!Array.isArray(imported.interested)){
+imported.interested=[];
 }
 
 if(
@@ -1555,6 +1717,7 @@ renderStudyPeopleChoices();
 renderAll();
 
 alert("Backup imported.");
+
 }
 
 }catch(error){
@@ -1568,26 +1731,29 @@ alert("Invalid backup file.");
 reader.readAsText(file);
 
 this.value="";
+
 });
 
 $("clearBtn").addEventListener("click",function(){
 
 if(
 confirm(
-"Delete ALL reports, schedules, and profiles from this device?"
+"Delete ALL reports, schedules, Bible Studies, and Interested people?"
 )
 ){
 
 data={
 reports:[],
 schedule:[],
-people:[]
+people:[],
+interested:[]
 };
 
 save();
 
 renderStudyPeopleChoices();
 renderAll();
+
 }
 
 });
@@ -1595,10 +1761,13 @@ renderAll();
 /* INITIALIZE */
 
 function renderAll(){
+
 renderDashboard();
 renderReports();
 renderSchedule();
-renderPeople();
+renderBibleStudies();
+renderInterested();
+
 }
 
 load();
