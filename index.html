@@ -9,64 +9,372 @@
 
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f7fb;color:#172033}
-header{background:#2563eb;color:white;padding:22px 18px}
-header h1{margin:0 0 5px;font-size:25px}
-header p{margin:0;opacity:.9;font-size:14px}
-nav{display:flex;gap:6px;overflow-x:auto;background:white;padding:10px;border-bottom:1px solid #e1e7f0}
-nav button{margin:0;white-space:nowrap;background:#eef2f7;color:#475569}
-nav button.active{background:#2563eb;color:white}
-main{max-width:1000px;margin:auto;padding:18px}
-.card{background:white;border:1px solid #e1e7f0;border-radius:14px;padding:18px;margin-bottom:16px}
-.card h2{margin:0 0 16px;font-size:19px}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{background:#eff6ff;border-radius:12px;padding:15px}
-.stat span{display:block;color:#52627a;font-size:13px}
-.stat strong{display:block;font-size:27px;margin-top:5px;color:#1d4ed8}
-label{display:block;font-weight:600;font-size:14px;margin:13px 0 6px}
-input,textarea,select,button{font:inherit;font-size:16px}
-input,textarea,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#172033}
-textarea{min-height:90px;resize:vertical}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button{border:0;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:600;margin-top:16px}
-.primary{background:#2563eb;color:white;width:100%}
-.secondary{background:#e8eef8;color:#1e40af}
-.danger{background:#fee2e2;color:#991b1b}
-.muted{color:#64748b;font-size:13px}
-.status{padding:10px 12px;background:#ecfdf5;color:#166534;border-radius:8px;font-size:13px;margin-top:12px}
-.report,.profile{border:1px solid #e1e7f0;border-radius:10px;padding:14px;margin-top:10px}
-.report strong,.profile h3{font-size:17px}
-.report p,.profile p{margin:6px 0;color:#52627a;font-size:14px}
-.report button,.profile button{margin-top:8px;padding:8px 12px;font-size:14px}
-.pill{display:inline-block;padding:4px 8px;border-radius:20px;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:600}
-.section{display:none}
-.section.active{display:block}
-.chart{display:flex;align-items:end;gap:8px;height:190px;border-bottom:1px solid #cbd5e1;padding:10px 0 0}
-.barwrap{flex:1;height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;min-width:0}
-.bar{width:100%;max-width:42px;background:#3b82f6;border-radius:5px 5px 0 0;min-height:2px}
-.bar.study{background:#16a34a}
-.bar.visit{background:#f59e0b}
-.barlabel{font-size:10px;color:#64748b;margin-top:5px}
-.barvalue{font-size:10px;color:#334155;margin-bottom:3px}
-.chartLegend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:#52627a}
-.legendBox{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px}
-.peopleChoices{border:1px solid #cbd5e1;border-radius:9px;padding:10px;max-height:220px;overflow:auto}
-.peopleChoices label{display:flex;align-items:center;gap:8px;font-weight:400;margin:8px 0}
-.peopleChoices input{width:auto}
-.selectedNames{font-size:13px;color:#52627a;margin-top:8px}
-.actions{display:flex;gap:6px;flex-wrap:wrap}
-.actions button{margin-top:8px;padding:8px 12px;font-size:14px}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+background:#f4f7fb;
+color:#172033;
+}
+
+header{
+background:#2563eb;
+color:white;
+padding:22px 18px;
+}
+
+header h1{
+margin:0 0 5px;
+font-size:25px;
+}
+
+header p{
+margin:0;
+opacity:.9;
+font-size:14px;
+}
+
+nav{
+display:flex;
+gap:6px;
+overflow-x:auto;
+background:white;
+padding:10px;
+border-bottom:1px solid #e1e7f0;
+}
+
+nav button{
+margin:0;
+white-space:nowrap;
+background:#eef2f7;
+color:#475569;
+}
+
+nav button.active{
+background:#2563eb;
+color:white;
+}
+
+main{
+max-width:1000px;
+margin:auto;
+padding:18px;
+}
+
+.card{
+background:white;
+border:1px solid #e1e7f0;
+border-radius:14px;
+padding:18px;
+margin-bottom:16px;
+}
+
+.card h2{
+margin:0 0 16px;
+font-size:19px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+}
+
+.stat{
+background:#eff6ff;
+border-radius:12px;
+padding:15px;
+}
+
+.stat span{
+display:block;
+color:#52627a;
+font-size:13px;
+}
+
+.stat strong{
+display:block;
+font-size:27px;
+margin-top:5px;
+color:#1d4ed8;
+}
+
+label{
+display:block;
+font-weight:600;
+font-size:14px;
+margin:13px 0 6px;
+}
+
+input,
+textarea,
+select,
+button{
+font:inherit;
+font-size:16px;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+border:1px solid #cbd5e1;
+border-radius:9px;
+background:white;
+color:#172033;
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
+input[readonly]{
+background:#f1f5f9;
+color:#1d4ed8;
+font-weight:700;
+}
+
+.two{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+button{
+border:0;
+border-radius:9px;
+padding:12px 16px;
+cursor:pointer;
+font-weight:600;
+margin-top:16px;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+width:100%;
+}
+
+.secondary{
+background:#e8eef8;
+color:#1e40af;
+}
+
+.danger{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.muted{
+color:#64748b;
+font-size:13px;
+}
+
+.status{
+padding:10px 12px;
+background:#ecfdf5;
+color:#166534;
+border-radius:8px;
+font-size:13px;
+margin-top:12px;
+}
+
+.report,
+.profile{
+border:1px solid #e1e7f0;
+border-radius:10px;
+padding:14px;
+margin-top:10px;
+}
+
+.report strong,
+.profile h3{
+font-size:17px;
+}
+
+.report p,
+.profile p{
+margin:6px 0;
+color:#52627a;
+font-size:14px;
+}
+
+.report button,
+.profile button{
+margin-top:8px;
+padding:8px 12px;
+font-size:14px;
+}
+
+.pill{
+display:inline-block;
+padding:4px 8px;
+border-radius:20px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:600;
+}
+
+.section{
+display:none;
+}
+
+.section.active{
+display:block;
+}
+
+.chart{
+display:flex;
+align-items:end;
+gap:8px;
+height:190px;
+border-bottom:1px solid #cbd5e1;
+padding:10px 0 0;
+}
+
+.barwrap{
+flex:1;
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:end;
+align-items:center;
+min-width:0;
+}
+
+.bar{
+width:100%;
+max-width:42px;
+background:#3b82f6;
+border-radius:5px 5px 0 0;
+min-height:2px;
+}
+
+.bar.study{
+background:#16a34a;
+}
+
+.bar.visit{
+background:#f59e0b;
+}
+
+.barlabel{
+font-size:10px;
+color:#64748b;
+margin-top:5px;
+}
+
+.barvalue{
+font-size:10px;
+color:#334155;
+margin-bottom:3px;
+}
+
+.chartLegend{
+display:flex;
+gap:14px;
+flex-wrap:wrap;
+margin-top:12px;
+font-size:13px;
+color:#52627a;
+}
+
+.legendBox{
+display:inline-block;
+width:12px;
+height:12px;
+border-radius:3px;
+margin-right:5px;
+}
+
+.peopleChoices{
+border:1px solid #cbd5e1;
+border-radius:9px;
+padding:12px;
+max-height:260px;
+overflow:auto;
+background:#f8fafc;
+}
+
+.personChoice{
+display:flex;
+align-items:center;
+gap:10px;
+padding:10px;
+margin:5px 0;
+background:white;
+border:1px solid #e2e8f0;
+border-radius:8px;
+cursor:pointer;
+}
+
+.personChoice input{
+width:20px;
+height:20px;
+accent-color:#2563eb;
+}
+
+.personChoice span{
+font-size:15px;
+font-weight:500;
+}
+
+.selectedNames{
+font-size:13px;
+color:#52627a;
+margin-top:10px;
+padding:10px;
+background:#f8fafc;
+border-radius:8px;
+}
+
+.selectionTotal{
+font-weight:700;
+color:#1d4ed8;
+}
+
+.actions{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+}
+
+.actions button{
+margin-top:8px;
+padding:8px 12px;
+font-size:14px;
+}
+
 @media(max-width:450px){
-main{padding:12px}
-.two{grid-template-columns:1fr;gap:0}
-.stats{gap:8px}
-.stat strong{font-size:24px}
-.card{padding:14px}
+main{
+padding:12px;
+}
+
+.two{
+grid-template-columns:1fr;
+gap:0;
+}
+
+.stats{
+gap:8px;
+}
+
+.stat strong{
+font-size:24px;
+}
+
+.card{
+padding:14px;
+}
 }
 </style>
 </head>
 
 <body>
+
 <header>
 <h1>📖 MInistry Tracker</h1>
 <p>Your personal ministry journal</p>
@@ -91,13 +399,30 @@ main{padding:12px}
 <input type="month" id="dashboardMonth">
 
 <div class="stats">
-<div class="stat"><span>Total hours</span><strong id="totalHours">0:00</strong></div>
-<div class="stat"><span>Bible studies</span><strong id="totalStudies">0</strong></div>
-<div class="stat"><span>Return visits</span><strong id="totalVisits">0</strong></div>
-<div class="stat"><span>Reports</span><strong id="totalReports">0</strong></div>
+<div class="stat">
+<span>Total hours</span>
+<strong id="totalHours">0:00</strong>
 </div>
 
-<div class="status">Your data is saved on this device.</div>
+<div class="stat">
+<span>Bible studies</span>
+<strong id="totalStudies">0</strong>
+</div>
+
+<div class="stat">
+<span>Return visits</span>
+<strong id="totalVisits">0</strong>
+</div>
+
+<div class="stat">
+<span>Reports</span>
+<strong id="totalReports">0</strong>
+</div>
+</div>
+
+<div class="status">
+Your data is saved on this device.
+</div>
 </div>
 
 <div class="card">
@@ -110,9 +435,17 @@ main{padding:12px}
 <h2>Bible studies and return visits</h2>
 <p class="muted">Comparison for the selected month.</p>
 <div id="activityChart" class="chart"></div>
+
 <div class="chartLegend">
-<span><span class="legendBox" style="background:#16a34a"></span>Bible studies</span>
-<span><span class="legendBox" style="background:#f59e0b"></span>Return visits</span>
+<span>
+<span class="legendBox" style="background:#16a34a"></span>
+Bible studies
+</span>
+
+<span>
+<span class="legendBox" style="background:#f59e0b"></span>
+Return visits
+</span>
 </div>
 </div>
 
@@ -146,6 +479,7 @@ main{padding:12px}
 <input type="date" id="reportDate" required>
 
 <div class="two">
+
 <div>
 <label for="hours">Hours</label>
 <input type="number" id="hours" min="0" max="999" value="0" required>
@@ -155,41 +489,50 @@ main{padding:12px}
 <label for="minutes">Minutes</label>
 <input type="number" id="minutes" min="0" max="59" value="0" required>
 </div>
+
 </div>
 
-<label>Bible study people</label>
+<label>Bible studies</label>
+
 <p class="muted">
-Select the Bible study people you were able to conduct a study with on this date.
-The number will automatically appear in the Bible studies field.
+Select every Bible study person you studied with on this date.
+You may select as many people as needed.
 </p>
 
 <div id="studyPeopleChoices" class="peopleChoices">
-<p class="muted">Add people with the type “Bible Study” first.</p>
+<p class="muted">
+No Bible study people yet. Add them in the People tab first.
+</p>
 </div>
 
 <div class="selectedNames" id="selectedStudyNames">
 No Bible study people selected.
 </div>
 
-<label for="studies">Bible studies</label>
-<input type="number" id="studies" min="0" value="0" readonly>
+<label for="studies">Total Bible studies</label>
 
-<div class="two">
-<div>
+<input
+type="number"
+id="studies"
+min="0"
+value="0"
+readonly
+>
+
+<p class="muted">
+The total is automatically calculated from the selected people.
+</p>
+
 <label for="visits">Return visits</label>
 <input type="number" id="visits" min="0" value="0" required>
-</div>
-
-<div>
-<label for="reportStudyCount">Selected studies</label>
-<input type="text" id="reportStudyCount" value="0 people" readonly>
-</div>
-</div>
 
 <label for="notes">Notes</label>
 <textarea id="notes" placeholder="Optional ministry notes..."></textarea>
 
-<button class="primary" type="submit">Save report</button>
+<button class="primary" type="submit">
+Save report
+</button>
+
 </form>
 </div>
 
@@ -211,10 +554,12 @@ No Bible study people selected.
 <h2>Add schedule</h2>
 
 <form id="scheduleForm">
+
 <label for="eventTitle">Activity title</label>
 <input id="eventTitle" placeholder="Example: House-to-house ministry" required>
 
 <div class="two">
+
 <div>
 <label for="eventDate">Date</label>
 <input type="date" id="eventDate" required>
@@ -224,6 +569,7 @@ No Bible study people selected.
 <label for="eventTime">Time</label>
 <input type="time" id="eventTime">
 </div>
+
 </div>
 
 <label for="eventLocation">Location</label>
@@ -232,7 +578,10 @@ No Bible study people selected.
 <label for="eventNotes">Notes</label>
 <textarea id="eventNotes" placeholder="Meeting point, preparation, etc."></textarea>
 
-<button class="primary" type="submit">Add to schedule</button>
+<button class="primary" type="submit">
+Add to schedule
+</button>
+
 </form>
 </div>
 
@@ -248,7 +597,11 @@ No Bible study people selected.
 
 <div class="card">
 <h2>Add person</h2>
-<p class="muted">Keep your Bible study and return visit information organized.</p>
+
+<p class="muted">
+Add people here first. People marked as “Bible Studies”
+will appear as selectable names in the Reports tab.
+</p>
 
 <form id="personForm">
 
@@ -256,8 +609,9 @@ No Bible study people selected.
 <input id="personName" placeholder="Enter a name or nickname" required>
 
 <label for="personType">Type</label>
+
 <select id="personType">
-<option value="Bible Study">Bible Study</option>
+<option value="Bible Studies">Bible Studies</option>
 <option value="Return Visit">Return Visit</option>
 </select>
 
@@ -270,7 +624,10 @@ No Bible study people selected.
 <label for="personNotes">Notes / interests / next topic</label>
 <textarea id="personNotes" placeholder="Optional notes"></textarea>
 
-<button class="primary" type="submit">Save person</button>
+<button class="primary" type="submit">
+Save person
+</button>
+
 </form>
 </div>
 
@@ -278,9 +635,10 @@ No Bible study people selected.
 <h2>People list</h2>
 
 <label for="personFilter">Filter</label>
+
 <select id="personFilter">
 <option value="All">All</option>
-<option value="Bible Study">Bible Studies</option>
+<option value="Bible Studies">Bible Studies</option>
 <option value="Return Visit">Return Visits</option>
 </select>
 
@@ -289,17 +647,34 @@ No Bible study people selected.
 
 </section>
 
+<!-- BACKUP -->
 <div class="card">
 <h2>Backup and data</h2>
+
 <p class="muted">
-Export your reports, schedules, and profiles. Import a previous backup to restore data on this device.
+Export your reports, schedules, and profiles.
+Import a previous backup to restore data on this device.
 </p>
 
 <div class="actions">
-<button class="secondary" id="exportBtn" type="button">Export backup</button>
-<button class="secondary" id="importBtn" type="button">Import backup</button>
-<input type="file" id="importFile" accept=".json,application/json" style="display:none">
-<button class="danger" id="clearBtn" type="button">Delete all data</button>
+<button class="secondary" id="exportBtn" type="button">
+Export backup
+</button>
+
+<button class="secondary" id="importBtn" type="button">
+Import backup
+</button>
+
+<input
+type="file"
+id="importFile"
+accept=".json,application/json"
+style="display:none"
+>
+
+<button class="danger" id="clearBtn" type="button">
+Delete all data
+</button>
 </div>
 </div>
 
@@ -310,12 +685,23 @@ Export your reports, schedules, and profiles. Import a previous backup to restor
 "use strict";
 
 var KEY="ministry_tracker_v2";
-var data={reports:[],schedule:[],people:[]};
 
-function $(id){return document.getElementById(id);}
-function uid(){return Date.now()+"_"+Math.random().toString(36).slice(2);}
-function esc(v){
-return String(v==null?"":v)
+var data={
+reports:[],
+schedule:[],
+people:[]
+};
+
+function $(id){
+return document.getElementById(id);
+}
+
+function uid(){
+return Date.now()+"_"+Math.random().toString(36).slice(2);
+}
+
+function esc(value){
+return String(value==null?"":value)
 .replace(/&/g,"&amp;")
 .replace(/</g,"&lt;")
 .replace(/>/g,"&gt;")
@@ -333,32 +719,44 @@ alert("Could not save data on this device.");
 
 function load(){
 try{
-var s=localStorage.getItem(KEY);
-if(s){
-var x=JSON.parse(s);
-if(x&&typeof x==="object"){
-data.reports=Array.isArray(x.reports)?x.reports:[];
-data.schedule=Array.isArray(x.schedule)?x.schedule:[];
-data.people=Array.isArray(x.people)?x.people:[];
+var saved=localStorage.getItem(KEY);
+
+if(saved){
+var oldData=JSON.parse(saved);
+
+if(oldData&&typeof oldData==="object"){
+data.reports=Array.isArray(oldData.reports)?oldData.reports:[];
+data.schedule=Array.isArray(oldData.schedule)?oldData.schedule:[];
+data.people=Array.isArray(oldData.people)?oldData.people:[];
 }
 }
 }catch(e){}
 }
 
-function fmt(min){
-return Math.floor(min/60)+":"+String(min%60).padStart(2,"0");
+function fmt(minutes){
+return Math.floor(minutes/60)+":"+String(minutes%60).padStart(2,"0");
 }
 
-function dateText(s){
-if(!s)return "No date";
-return new Date(s+"T12:00:00").toLocaleDateString();
+function dateText(date){
+if(!date)return "No date";
+
+return new Date(date+"T12:00:00")
+.toLocaleDateString();
 }
 
-function monthText(s){
-if(!s)return "";
-var p=s.split("-");
-return new Date(Number(p[0]),Number(p[1])-1,1)
-.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+function monthText(month){
+if(!month)return "";
+
+var parts=month.split("-");
+
+return new Date(
+Number(parts[0]),
+Number(parts[1])-1,
+1
+).toLocaleDateString(undefined,{
+month:"long",
+year:"numeric"
+});
 }
 
 function nowDate(){
@@ -369,113 +767,143 @@ function nowMonth(){
 return nowDate().slice(0,7);
 }
 
-function reportDate(r){
-return r.date||r.month+"-01";
+function reportDate(report){
+return report.date||((report.month||"")+"-01");
 }
 
-function reportMonth(r){
-return r.date?r.date.slice(0,7):r.month;
+function reportMonth(report){
+return report.date?
+report.date.slice(0,7):
+report.month;
 }
 
-function reportMinutes(r){
-return Number(r.hours||0)*60+Number(r.minutes||0);
+function reportMinutes(report){
+return Number(report.hours||0)*60+
+Number(report.minutes||0);
 }
+
+function isBibleStudyPerson(person){
+return person.type==="Bible Studies"||
+person.type==="Bible Study";
+}
+
+/* NAVIGATION */
 
 function showTab(id){
-document.querySelectorAll(".section").forEach(function(s){
-s.classList.toggle("active",s.id===id);
+
+document.querySelectorAll(".section")
+.forEach(function(section){
+section.classList.toggle("active",section.id===id);
 });
 
-document.querySelectorAll("nav button").forEach(function(b){
-b.classList.toggle("active",b.dataset.tab===id);
+document.querySelectorAll("nav button")
+.forEach(function(button){
+button.classList.toggle("active",button.dataset.tab===id);
 });
 
 renderAll();
 }
 
-document.querySelectorAll("nav button").forEach(function(b){
-b.addEventListener("click",function(){
-showTab(b.dataset.tab);
+document.querySelectorAll("nav button")
+.forEach(function(button){
+button.addEventListener("click",function(){
+showTab(button.dataset.tab);
 });
 });
 
-/* DASHBOARD */
+/* CHARTS */
 
 function makeBars(items,type){
+
 var max=1;
 
-items.forEach(function(x){
-if(x.total>max)max=x.total;
+items.forEach(function(item){
+if(item.total>max){
+max=item.total;
+}
 });
 
-return items.map(function(x){
-var h=Math.round(x.total/max*145);
+return items.map(function(item){
+
+var height=Math.round(item.total/max*145);
 
 return '<div class="barwrap">'+
-'<div class="barvalue">'+esc(x.total)+'</div>'+
-'<div class="bar '+type+'" style="height:'+h+'px"></div>'+
-'<div class="barlabel">'+esc(x.label)+'</div>'+
+'<div class="barvalue">'+esc(item.total)+'</div>'+
+'<div class="bar '+type+'" style="height:'+height+'px"></div>'+
+'<div class="barlabel">'+esc(item.label)+'</div>'+
 '</div>';
+
 }).join("");
 }
+
+/* DASHBOARD */
 
 function renderDashboard(){
 
 var month=$("dashboardMonth").value||nowMonth();
 
-var rs=data.reports.filter(function(r){
-return reportMonth(r)===month;
+var reports=data.reports.filter(function(report){
+return reportMonth(report)===month;
 });
 
-var mins=0;
-var studies=0;
-var visits=0;
+var totalMinutes=0;
+var totalStudies=0;
+var totalVisits=0;
 
-rs.forEach(function(r){
-mins+=reportMinutes(r);
-studies+=Number(r.studies||0);
-visits+=Number(r.visits||0);
+reports.forEach(function(report){
+totalMinutes+=reportMinutes(report);
+totalStudies+=Number(report.studies||0);
+totalVisits+=Number(report.visits||0);
 });
 
-$("totalHours").textContent=fmt(mins);
-$("totalStudies").textContent=studies;
-$("totalVisits").textContent=visits;
-$("totalReports").textContent=rs.length;
+$("totalHours").textContent=fmt(totalMinutes);
+$("totalStudies").textContent=totalStudies;
+$("totalVisits").textContent=totalVisits;
+$("totalReports").textContent=reports.length;
 
-/* Monthly hours graph */
+/* Monthly hours */
 var months=[];
 
 for(var i=5;i>=0;i--){
-var d=new Date(Number(month.slice(0,4)),Number(month.slice(5))-1-i,1);
-var key=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+
+var date=new Date(
+Number(month.slice(0,4)),
+Number(month.slice(5))-1-i,
+1
+);
+
+var key=date.getFullYear()+"-"+
+String(date.getMonth()+1).padStart(2,"0");
+
 var total=0;
 
-data.reports.filter(function(r){
-return reportMonth(r)===key;
-}).forEach(function(r){
-total+=reportMinutes(r);
+data.reports.filter(function(report){
+return reportMonth(report)===key;
+}).forEach(function(report){
+total+=reportMinutes(report);
 });
 
 months.push({
-key:key,
+label:key.slice(5),
 total:Math.round(total/60*10)/10
 });
 }
 
-$("hoursChart").innerHTML=makeBars(
-months.map(function(x){
-return {label:x.key.slice(5),total:x.total};
-}),
-""
-);
+$("hoursChart").innerHTML=makeBars(months,"");
 
-/* Studies and visits graph */
+/* Studies and visits */
 $("activityChart").innerHTML=makeBars([
-{label:"Studies",total:studies},
-{label:"Visits",total:visits}
+{
+label:"Studies",
+total:totalStudies
+},
+{
+label:"Visits",
+total:totalVisits
+}
 ],"");
 
-/* Daily graph */
+/* Daily hours */
 var daysInMonth=new Date(
 Number(month.slice(0,4)),
 Number(month.slice(5)),
@@ -485,54 +913,78 @@ Number(month.slice(5)),
 var daily=[];
 
 for(var day=1;day<=daysInMonth;day++){
-var date=month+"-"+String(day).padStart(2,"0");
-var total=0;
 
-data.reports.filter(function(r){
-return reportDate(r)===date;
-}).forEach(function(r){
-total+=reportMinutes(r);
+var currentDate=month+"-"+
+String(day).padStart(2,"0");
+
+var dailyTotal=0;
+
+data.reports.filter(function(report){
+return reportDate(report)===currentDate;
+}).forEach(function(report){
+dailyTotal+=reportMinutes(report);
 });
 
 daily.push({
 label:String(day),
-total:Math.round(total/60*10)/10
+total:Math.round(dailyTotal/60*10)/10
 });
 }
 
 $("dailyChart").innerHTML=makeBars(daily,"");
 
 /* People statistics */
-var bibleStudies=data.people.filter(function(p){
-return p.type==="Bible Study";
+var bibleStudyPeople=data.people.filter(function(person){
+return isBibleStudyPerson(person);
 });
 
-var returnVisits=data.people.filter(function(p){
-return p.type==="Return Visit";
+var returnVisitPeople=data.people.filter(function(person){
+return person.type==="Return Visit";
 });
 
 var studiedPeople={};
 
-rs.forEach(function(r){
-(r.studyPeople||[]).forEach(function(id){
-studiedPeople[id]=true;
-});
+reports.forEach(function(report){
+
+if(Array.isArray(report.studyPeople)){
+
+report.studyPeople.forEach(function(personId){
+studiedPeople[personId]=true;
 });
 
-var completedPeople=Object.keys(studiedPeople).length;
+}
+
+});
 
 $("peopleStats").innerHTML=
 '<div class="stats">'+
-'<div class="stat"><span>Bible study profiles</span><strong>'+bibleStudies.length+'</strong></div>'+
-'<div class="stat"><span>Return visit profiles</span><strong>'+returnVisits.length+'</strong></div>'+
-'<div class="stat"><span>People studied this month</span><strong>'+completedPeople+'</strong></div>'+
-'<div class="stat"><span>Total people</span><strong>'+data.people.length+'</strong></div>'+
+
+'<div class="stat">'+
+'<span>Bible study profiles</span>'+
+'<strong>'+bibleStudyPeople.length+'</strong>'+
+'</div>'+
+
+'<div class="stat">'+
+'<span>Return visit profiles</span>'+
+'<strong>'+returnVisitPeople.length+'</strong>'+
+'</div>'+
+
+'<div class="stat">'+
+'<span>People studied this month</span>'+
+'<strong>'+Object.keys(studiedPeople).length+'</strong>'+
+'</div>'+
+
+'<div class="stat">'+
+'<span>Total people</span>'+
+'<strong>'+data.people.length+'</strong>'+
+'</div>'+
+
 '</div>';
 
 /* Upcoming schedule */
 var upcoming=data.schedule
-.filter(function(e){
-return e.date>=nowDate();
+.filter(function(event){
+return event.date>=nowDate();
 })
 .sort(function(a,b){
 return (a.date+a.time).localeCompare(b.date+b.time);
@@ -540,108 +992,189 @@ return (a.date+a.time).localeCompare(b.date+b.time);
 .slice(0,5);
 
 $("upcomingDashboard").innerHTML=upcoming.length?
-upcoming.map(function(e){
+
+upcoming.map(function(event){
+
 return '<div class="report">'+
-'<strong>'+esc(e.title)+'</strong>'+
-'<p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p>'+
+'<strong>'+esc(event.title)+'</strong>'+
+'<p>'+dateText(event.date)+
+(event.time?" · "+esc(event.time):"")+
+'</p>'+
 '</div>';
+
 }).join("")
-:'<p class="muted">No upcoming activities.</p>';
+
+:
+
+'<p class="muted">No upcoming activities.</p>';
 }
 
 $("dashboardMonth").value=nowMonth();
-$("dashboardMonth").addEventListener("change",renderDashboard);
 
-/* REPORT PEOPLE SELECTION */
+$("dashboardMonth").addEventListener(
+"change",
+renderDashboard
+);
+
+/* BIBLE STUDY PEOPLE SELECTION */
 
 function renderStudyPeopleChoices(){
 
-var people=data.people.filter(function(p){
-return p.type==="Bible Study";
+var people=data.people.filter(function(person){
+return isBibleStudyPerson(person);
 });
 
 if(!people.length){
+
 $("studyPeopleChoices").innerHTML=
-'<p class="muted">Add people with the type “Bible Study” first.</p>';
+'<p class="muted">'+
+'No Bible study people yet. Add them in the People tab first.'+
+'</p>';
+
 $("studies").value=0;
-$("reportStudyCount").value="0 people";
-$("selectedStudyNames").textContent="No Bible study people selected.";
+
+$("selectedStudyNames").textContent=
+"No Bible study people selected.";
+
 return;
 }
 
-$("studyPeopleChoices").innerHTML=people.map(function(p){
-return '<label>'+
-'<input type="checkbox" class="studyPersonCheckbox" value="'+esc(p.id)+'">'+
-'<span>'+esc(p.name)+'</span>'+
+$("studyPeopleChoices").innerHTML=people.map(function(person){
+
+return '<label class="personChoice">'+
+
+'<input '+
+'type="checkbox" '+
+'class="studyPersonCheckbox" '+
+'value="'+esc(person.id)+'">'+
+
+'<span>'+esc(person.name)+'</span>'+
+
 '</label>';
+
 }).join("");
 
-document.querySelectorAll(".studyPersonCheckbox").forEach(function(box){
-box.addEventListener("change",updateSelectedStudies);
+document.querySelectorAll(".studyPersonCheckbox")
+.forEach(function(checkbox){
+
+checkbox.addEventListener(
+"change",
+updateSelectedStudies
+);
+
 });
 }
 
 function updateSelectedStudies(){
 
-var selected=[];
-var names=[];
+var selectedIds=[];
+var selectedNames=[];
 
-document.querySelectorAll(".studyPersonCheckbox:checked")
-.forEach(function(box){
-selected.push(box.value);
+document.querySelectorAll(
+".studyPersonCheckbox:checked"
+).forEach(function(checkbox){
 
-var person=data.people.find(function(p){
-return p.id===box.value;
+selectedIds.push(checkbox.value);
+
+var person=data.people.find(function(item){
+return item.id===checkbox.value;
 });
 
-if(person)names.push(person.name);
+if(person){
+selectedNames.push(person.name);
+}
+
 });
 
-$("studies").value=selected.length;
-$("reportStudyCount").value=selected.length+" people";
+/*
+The total is always equal to the number
+of checked Bible study people.
+*/
+$("studies").value=selectedIds.length;
 
-$("selectedStudyNames").textContent=names.length?
-"Selected: "+names.join(", "):
+$("selectedStudyNames").innerHTML=
+selectedNames.length?
+
+'<span class="selectionTotal">'+
+selectedIds.length+
+'</span> selected: '+
+esc(selectedNames.join(", "))
+
+:
+
 "No Bible study people selected.";
 }
 
-$("reportForm").addEventListener("submit",function(e){
-e.preventDefault();
+/* REPORTS */
 
-var h=Number($("hours").value);
-var m=Number($("minutes").value);
+$("reportDate").value=nowDate();
+$("reportsMonthFilter").value=nowMonth();
 
-if(!Number.isFinite(h)||!Number.isFinite(m)||h<0||m<0||m>59){
+$("reportForm").addEventListener("submit",function(event){
+
+event.preventDefault();
+
+var hours=Number($("hours").value);
+var minutes=Number($("minutes").value);
+
+if(
+!Number.isFinite(hours)||
+!Number.isFinite(minutes)||
+hours<0||
+minutes<0||
+minutes>59
+){
 alert("Enter valid hours and minutes.");
 return;
 }
 
-var selected=[];
+var selectedPeople=[];
 
-document.querySelectorAll(".studyPersonCheckbox:checked")
-.forEach(function(box){
-selected.push(box.value);
+document.querySelectorAll(
+".studyPersonCheckbox:checked"
+).forEach(function(checkbox){
+selectedPeople.push(checkbox.value);
 });
 
 data.reports.push({
+
 id:uid(),
+
 date:$("reportDate").value,
+
 month:$("reportDate").value.slice(0,7),
-hours:h,
-minutes:m,
-studies:selected.length,
-studyPeople:selected,
+
+hours:hours,
+
+minutes:minutes,
+
+/*
+The number is automatically based
+on selected Bible study people.
+*/
+studies:selectedPeople.length,
+
+/*
+The actual selected people are saved.
+*/
+studyPeople:selectedPeople,
+
 visits:Number($("visits").value)||0,
+
 notes:$("notes").value.trim()
+
 });
 
 save();
+
 this.reset();
 
 $("reportDate").value=nowDate();
+
 $("studies").value=0;
-$("reportStudyCount").value="0 people";
-$("selectedStudyNames").textContent="No Bible study people selected.";
+
+$("selectedStudyNames").textContent=
+"No Bible study people selected.";
 
 renderStudyPeopleChoices();
 renderAll();
@@ -649,167 +1182,316 @@ renderAll();
 alert("Report saved.");
 });
 
-/* REPORTS */
-
-$("reportsMonthFilter").value=nowMonth();
-$("reportsMonthFilter").addEventListener("change",renderReports);
+/* REPORT LIST */
 
 function renderReports(){
 
 var filter=$("reportsMonthFilter").value||nowMonth();
 
-var list=data.reports.filter(function(r){
-return reportMonth(r)===filter;
+var reports=data.reports.filter(function(report){
+return reportMonth(report)===filter;
 }).slice().reverse();
 
-$("reportsList").innerHTML=list.length?
-list.map(function(r){
+$("reportsList").innerHTML=reports.length?
 
-var names=(r.studyPeople||[]).map(function(id){
-var p=data.people.find(function(x){return x.id===id;});
-return p?p.name:"Deleted person";
+reports.map(function(report){
+
+var names=[];
+
+if(Array.isArray(report.studyPeople)){
+
+report.studyPeople.forEach(function(personId){
+
+var person=data.people.find(function(item){
+return item.id===personId;
 });
 
+if(person){
+names.push(person.name);
+}else{
+names.push("Deleted person");
+}
+
+});
+
+}
+
 return '<div class="report">'+
-'<strong>'+esc(r.date?dateText(r.date):monthText(r.month))+'</strong>'+
-'<p>Hours: '+fmt(reportMinutes(r))+
-' · Bible studies: '+Number(r.studies||0)+
-' · Return visits: '+Number(r.visits||0)+'</p>'+
-(names.length?'<p>Studies with: '+esc(names.join(", "))+'</p>':'')+
-(r.notes?'<p>'+esc(r.notes)+'</p>':'')+
+
+'<strong>'+
+esc(report.date?dateText(report.date):monthText(report.month))+
+'</strong>'+
+
+'<p>'+
+'Hours: '+fmt(reportMinutes(report))+
+' · Bible studies: '+Number(report.studies||0)+
+' · Return visits: '+Number(report.visits||0)+
+'</p>'+
+
+(names.length?
+'<p>Studied with: '+esc(names.join(", "))+'</p>':
+'')+
+
+(report.notes?
+'<p>'+esc(report.notes)+'</p>':
+'')+
+
 '<div class="actions">'+
-'<button class="danger" data-delete-report="'+esc(r.id)+'">Delete</button>'+
+'<button class="danger" data-delete-report="'+
+esc(report.id)+
+'">Delete</button>'+
 '</div>'+
+
 '</div>';
 
 }).join("")
-:'<p class="muted">No reports for this month.</p>';
+
+:
+
+'<p class="muted">No reports for this month.</p>';
 }
 
-$("reportsList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-report]");
+$("reportsMonthFilter").addEventListener(
+"change",
+renderReports
+);
 
-if(b&&confirm("Delete this report?")){
-data.reports=data.reports.filter(function(r){
-return r.id!==b.dataset.deleteReport;
+$("reportsList").addEventListener("click",function(event){
+
+var button=event.target.closest(
+"[data-delete-report]"
+);
+
+if(
+button&&
+confirm("Delete this report?")
+){
+
+data.reports=data.reports.filter(function(report){
+return report.id!==button.dataset.deleteReport;
 });
 
 save();
 renderAll();
 }
+
 });
 
 /* SCHEDULE */
 
-$("scheduleForm").addEventListener("submit",function(e){
-e.preventDefault();
+$("scheduleForm").addEventListener("submit",function(event){
+
+event.preventDefault();
 
 data.schedule.push({
+
 id:uid(),
+
 title:$("eventTitle").value.trim(),
+
 date:$("eventDate").value,
+
 time:$("eventTime").value,
+
 location:$("eventLocation").value.trim(),
+
 notes:$("eventNotes").value.trim()
+
 });
 
 save();
+
 this.reset();
+
 renderAll();
+
 alert("Schedule added.");
 });
 
 function renderSchedule(){
 
 var list=data.schedule.slice().sort(function(a,b){
-return (a.date+a.time).localeCompare(b.date+b.time);
+
+return (a.date+a.time)
+.localeCompare(b.date+b.time);
+
 });
 
 $("scheduleList").innerHTML=list.length?
-list.map(function(e){
+
+list.map(function(event){
+
 return '<div class="report">'+
-'<strong>'+esc(e.title)+'</strong>'+
-'<p>'+dateText(e.date)+(e.time?" · "+esc(e.time):"")+'</p>'+
-(e.location?'<p>📍 '+esc(e.location)+'</p>':'')+
-(e.notes?'<p>'+esc(e.notes)+'</p>':'')+
-'<button class="danger" data-delete-event="'+esc(e.id)+'">Delete</button>'+
+
+'<strong>'+esc(event.title)+'</strong>'+
+
+'<p>'+
+dateText(event.date)+
+(event.time?" · "+esc(event.time):"")+
+'</p>'+
+
+(event.location?
+'<p>📍 '+esc(event.location)+'</p>':
+'')+
+
+(event.notes?
+'<p>'+esc(event.notes)+'</p>':
+'')+
+
+'<button class="danger" data-delete-event="'+
+esc(event.id)+
+'">Delete</button>'+
+
 '</div>';
+
 }).join("")
-:'<p class="muted">No scheduled activities.</p>';
+
+:
+
+'<p class="muted">No scheduled activities.</p>';
 }
 
-$("scheduleList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-event]");
+$("scheduleList").addEventListener("click",function(event){
 
-if(b&&confirm("Delete this schedule?")){
-data.schedule=data.schedule.filter(function(x){
-return x.id!==b.dataset.deleteEvent;
+var button=event.target.closest(
+"[data-delete-event]"
+);
+
+if(
+button&&
+confirm("Delete this schedule?")
+){
+
+data.schedule=data.schedule.filter(function(item){
+return item.id!==button.dataset.deleteEvent;
 });
 
 save();
 renderAll();
 }
+
 });
 
 /* PEOPLE */
 
-$("personForm").addEventListener("submit",function(e){
-e.preventDefault();
+$("personForm").addEventListener("submit",function(event){
+
+event.preventDefault();
 
 data.people.push({
+
 id:uid(),
+
 name:$("personName").value.trim(),
+
 type:$("personType").value,
+
 contact:$("personContact").value.trim(),
+
 last:$("personLast").value,
+
 notes:$("personNotes").value.trim()
+
 });
 
 save();
+
 this.reset();
+
 renderStudyPeopleChoices();
+
 renderAll();
+
 alert("Person saved.");
 });
 
-$("personFilter").addEventListener("change",renderPeople);
+$("personFilter").addEventListener(
+"change",
+renderPeople
+);
 
 function renderPeople(){
 
 var filter=$("personFilter").value;
 
-var list=data.people.filter(function(p){
-return filter==="All"||p.type===filter;
+var list=data.people.filter(function(person){
+
+if(filter==="All"){
+return true;
+}
+
+if(filter==="Bible Studies"){
+return isBibleStudyPerson(person);
+}
+
+return person.type===filter;
 });
 
 $("peopleList").innerHTML=list.length?
-list.map(function(p){
+
+list.map(function(person){
+
+var displayType=
+isBibleStudyPerson(person)?
+"Bible Studies":
+person.type;
 
 return '<div class="profile">'+
-'<h3>'+esc(p.name)+'</h3>'+
-'<span class="pill">'+esc(p.type)+'</span>'+
-(p.contact?'<p>Contact: '+esc(p.contact)+'</p>':'')+
-(p.last?'<p>Last visit/study: '+dateText(p.last)+'</p>':'')+
-(p.notes?'<p>'+esc(p.notes)+'</p>':'')+
-'<button class="danger" data-delete-person="'+esc(p.id)+'">Delete</button>'+
+
+'<h3>'+esc(person.name)+'</h3>'+
+
+'<span class="pill">'+
+esc(displayType)+
+'</span>'+
+
+(person.contact?
+'<p>Contact: '+esc(person.contact)+'</p>':
+'')+
+
+(person.last?
+'<p>Last visit/study: '+
+dateText(person.last)+
+'</p>':
+'')+
+
+(person.notes?
+'<p>'+esc(person.notes)+'</p>':
+'')+
+
+'<button class="danger" data-delete-person="'+
+esc(person.id)+
+'">Delete</button>'+
+
 '</div>';
 
 }).join("")
-:'<p class="muted">No people added.</p>';
+
+:
+
+'<p class="muted">No people added.</p>';
 }
 
-$("peopleList").addEventListener("click",function(e){
-var b=e.target.closest("[data-delete-person]");
+$("peopleList").addEventListener("click",function(event){
 
-if(b&&confirm("Delete this person?")){
-data.people=data.people.filter(function(p){
-return p.id!==b.dataset.deletePerson;
+var button=event.target.closest(
+"[data-delete-person]"
+);
+
+if(
+button&&
+confirm("Delete this person?")
+){
+
+data.people=data.people.filter(function(person){
+return person.id!==button.dataset.deletePerson;
 });
 
 save();
+
 renderStudyPeopleChoices();
 renderAll();
 }
+
 });
 
 /* BACKUP */
@@ -822,11 +1504,12 @@ var blob=new Blob(
 );
 
 var url=URL.createObjectURL(blob);
-var a=document.createElement("a");
 
-a.href=url;
-a.download="ministry-tracker-backup.json";
-a.click();
+var link=document.createElement("a");
+
+link.href=url;
+link.download="ministry-tracker-backup.json";
+link.click();
 
 URL.revokeObjectURL(url);
 });
@@ -838,44 +1521,75 @@ $("importFile").click();
 $("importFile").addEventListener("change",function(){
 
 var file=this.files[0];
-if(!file)return;
+
+if(!file){
+return;
+}
 
 var reader=new FileReader();
 
 reader.onload=function(){
 
 try{
-var x=JSON.parse(reader.result);
 
-if(!x||!Array.isArray(x.reports)||!Array.isArray(x.schedule)||!Array.isArray(x.people)){
+var imported=JSON.parse(reader.result);
+
+if(
+!imported||
+!Array.isArray(imported.reports)||
+!Array.isArray(imported.schedule)||
+!Array.isArray(imported.people)
+){
 throw new Error();
 }
 
-if(confirm("Replace all current data with this backup?")){
-data=x;
+if(
+confirm("Replace all current data with this backup?")
+){
+
+data=imported;
+
 save();
+
 renderStudyPeopleChoices();
 renderAll();
+
 alert("Backup imported.");
 }
 
-}catch(e){
+}catch(error){
+
 alert("Invalid backup file.");
+
 }
+
 };
 
 reader.readAsText(file);
+
 this.value="";
 });
 
 $("clearBtn").addEventListener("click",function(){
 
-if(confirm("Delete ALL reports, schedules, and profiles from this device?")){
-data={reports:[],schedule:[],people:[]};
+if(
+confirm(
+"Delete ALL reports, schedules, and profiles from this device?"
+)
+){
+
+data={
+reports:[],
+schedule:[],
+people:[]
+};
+
 save();
+
 renderStudyPeopleChoices();
 renderAll();
 }
+
 });
 
 /* INITIALIZE */
@@ -889,9 +1603,9 @@ renderPeople();
 
 load();
 
+$("dashboardMonth").value=nowMonth();
 $("reportDate").value=nowDate();
 $("reportsMonthFilter").value=nowMonth();
-$("dashboardMonth").value=nowMonth();
 
 renderStudyPeopleChoices();
 renderAll();
