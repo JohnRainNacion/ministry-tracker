@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>MInistry Tracker</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f4f7fb;
+      color: #172033;
+    }
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 22px 18px;
+    }
+    header h1 { margin: 0 0 5px; font-size: 25px; }
+    header p { margin: 0; opacity: .9; font-size: 14px; }
+    main { max-width: 900px; margin: auto; padding: 18px; }
+    .card {
+      background: white;
+      border: 1px solid #e1e7f0;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .card h2 { margin: 0 0 16px; font-size: 19px; }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .stat {
+      background: #eff6ff;
+      border-radius: 12px;
+      padding: 15px;
+    }
+    .stat span { display: block; color: #52627a; font-size: 13px; }
+    .stat strong { display: block; font-size: 28px; margin-top: 5px; color: #1d4ed8; }
+    label { display: block; font-weight: 600; font-size: 14px; margin: 13px 0 6px; }
+    input, textarea, button {
+      font: inherit;
+      font-size: 16px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      background: white;
+      color: #172033;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+    .primary { background: #2563eb; color: white; width: 100%; }
+    .secondary { background: #e8eef8; color: #1e40af; }
+    .danger { background: #fee2e2; color: #991b1b; }
+    .report {
+      border: 1px solid #e1e7f0;
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+    .report strong { font-size: 16px; }
+    .report p { margin: 6px 0; color: #52627a; font-size: 14px; }
+    .report button { margin-top: 8px; padding: 8px 12px; font-size: 14px; }
+    .muted { color: #64748b; font-size: 13px; }
+    .status {
+      padding: 10px 12px;
+      background: #ecfdf5;
+      color: #166534;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    @media (max-width: 450px) {
+      main { padding: 12px; }
+      .two { grid-template-columns: 1fr; gap: 0; }
+      .stats { gap: 8px; }
+      .stat strong { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📖 MInistry Tracker</h1>
+    <p>Your personal ministry journal</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Monthly overview</h2>
+      <div class="stats">
+        <div class="stat">
+          <span>Total hours</span>
+          <strong id="totalHours">0:00</strong>
+        </div>
+        <div class="stat">
+          <span>Bible studies</span>
+          <strong id="totalStudies">0</strong>
+        </div>
+        <div class="stat">
+          <span>Return visits</span>
+          <strong id="totalVisits">0</strong>
+        </div>
+        <div class="stat">
+          <span>Reports</span>
+          <strong id="totalReports">0</strong>
+        </div>
+      </div>
+      <div class="status" id="storageStatus">
+        Your data is saved on this device.
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Add ministry report</h2>
+      <form id="reportForm">
+        <label for="month">Month</label>
+        <input type="month" id="month" required>
+
+        <div class="two">
+          <div>
+            <label for="hours">Hours</label>
+            <input type="number" id="hours" min="0" max="999" value="0" required>
+          </div>
+          <div>
+            <label for="minutes">Minutes</label>
+            <input type="number" id="minutes" min="0" max="59" value="0" required>
+          </div>
+        </div>
+
+        <div class="two">
+          <div>
+            <label for="studies">Bible studies</label>
+            <input type="number" id="studies" min="0" value="0" required>
+          </div>
+          <div>
+            <label for="visits">Return visits</label>
+            <input type="number" id="visits" min="0" value="0" required>
+          </div>
+        </div>
+
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="Optional notes about your ministry..."></textarea>
+
+        <button class="primary" type="submit">Save report</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>My reports</h2>
+      <p class="muted">Your saved reports appear here.</p>
+      <div id="reportsList"></div>
+      <button class="secondary" id="exportBtn" type="button">Export backup</button>
+      <button class="danger" id="clearBtn" type="button">Delete all reports</button>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "ministry_tracker_reports_v1";
+      var reports = [];
+
+      var form = document.getElementById("reportForm");
+      var monthInput = document.getElementById("month");
+      var hoursInput = document.getElementById("hours");
+      var minutesInput = document.getElementById("minutes");
+      var studiesInput = document.getElementById("studies");
+      var visitsInput = document.getElementById("visits");
+      var notesInput = document.getElementById("notes");
+      var reportsList = document.getElementById("reportsList");
+
+      function loadReports() {
+        try {
+          var saved = localStorage.getItem(STORAGE_KEY);
+          reports = saved ? JSON.parse(saved) : [];
+          if (!Array.isArray(reports)) reports = [];
+        } catch (error) {
+          reports = [];
+          document.getElementById("storageStatus").textContent =
+            "Storage is unavailable. Your reports may not be saved.";
+        }
+      }
+
+      function saveReports() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(reports));
+          document.getElementById("storageStatus").textContent =
+            "Saved on this device. Not synced to other devices yet.";
+        } catch (error) {
+          alert("Could not save the report on this device.");
+        }
+      }
+
+      function formatTime(totalMinutes) {
+        var h = Math.floor(totalMinutes / 60);
+        var m = totalMinutes % 60;
+        return h + ":" + String(m).padStart(2, "0");
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function updateDashboard() {
+        var totalMinutes = 0;
+        var studies = 0;
+        var visits = 0;
+
+        reports.forEach(function (report) {
+          totalMinutes += report.hours * 60 + report.minutes;
+          studies += report.studies;
+          visits += report.visits;
+        });
+
+        document.getElementById("totalHours").textContent =
+          formatTime(totalMinutes);
+        document.getElementById("totalStudies").textContent = studies;
+        document.getElementById("totalVisits").textContent = visits;
+        document.getElementById("totalReports").textContent = reports.length;
+      }
+
+      function renderReports() {
+        reportsList.innerHTML = "";
+
+        if (reports.length === 0) {
+          reportsList.innerHTML =
+            '<p class="muted">No reports yet. Add your first report above.</p>';
+          return;
+        }
+
+        reports.slice().reverse().forEach(function (report) {
+          var item = document.createElement("div");
+          item.className = "report";
+
+          var dateText = report.month || "Unknown month";
+          var notesText = report.notes
+            ? "<p>" + escapeHtml(report.notes) + "</p>"
+            : "";
+
+          item.innerHTML =
+            "<strong>" + escapeHtml(dateText) + "</strong>" +
+            "<p>Hours: " + formatTime(report.hours * 60 + report.minutes) +
+            " · Bible studies: " + report.studies +
+            " · Return visits: " + report.visits + "</p>" +
+            notesText +
+            '<button class="danger" type="button">Delete</button>';
+
+          item.querySelector("button").addEventListener("click", function () {
+            if (confirm("Delete this report?")) {
+              reports = reports.filter(function (r) {
+                return r.id !== report.id;
+              });
+              saveReports();
+              updateDashboard();
+              renderReports();
+            }
+          });
+
+          reportsList.appendChild(item);
+        });
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        var hours = Number(hoursInput.value);
+        var minutes = Number(minutesInput.value);
+        var studies = Number(studiesInput.value);
+        var visits = Number(visitsInput.value);
+
+        if (
+          !monthInput.value ||
+          !Number.isFinite(hours) ||
+          !Number.isFinite(minutes) ||
+          !Number.isFinite(studies) ||
+          !Number.isFinite(visits) ||
+          hours < 0 ||
+          minutes < 0 ||
+          minutes > 59 ||
+          studies < 0 ||
+          visits < 0
+        ) {
+          alert("Please enter valid report values.");
+          return;
+        }
+
+        reports.push({
+          id: Date.now(),
+          month: monthInput.value,
+          hours: hours,
+          minutes: minutes,
+          studies: studies,
+          visits: visits,
+          notes: notesInput.value.trim()
+        });
+
+        saveReports();
+        updateDashboard();
+        renderReports();
+
+        form.reset();
+        monthInput.value = new Date().toISOString().slice(0, 7);
+        hoursInput.value = 0;
+        minutesInput.value = 0;
+        studiesInput.value = 0;
+        visitsInput.value = 0;
+
+        alert("Report saved successfully.");
+      });
+
+      document.getElementById("exportBtn").addEventListener("click", function () {
+        var data = JSON.stringify(reports, null, 2);
+        var blob = new Blob([data], { type: "application/json" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+
+        link.href = url;
+        link.download = "ministry-tracker-backup.json";
+        link.click();
+
+        URL.revokeObjectURL(url);
+      });
+
+      document.getElementById("clearBtn").addEventListener("click", function () {
+        if (!reports.length) {
+          alert("There are no reports to delete.");
+          return;
+        }
+
+        if (confirm("Delete ALL reports from this device? This cannot be undone.")) {
+          reports = [];
+          saveReports();
+          updateDashboard();
+          renderReports();
+        }
+      });
+
+      monthInput.value = new Date().toISOString().slice(0, 7);
+      loadReports();
+      updateDashboard();
+      renderReports();
+    })();
+  </script>
+</body>
+</html>
